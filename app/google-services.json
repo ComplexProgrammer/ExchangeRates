@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "330667782196",
+    "project_id": "exchangerates-324716",
+    "storage_bucket": "exchangerates-324716.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330667782196:android:e949cf1cad7742c9159a61",
+        "android_client_info": {
+          "package_name": "exchangerates.complexprogrammer.uz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "330667782196-573ghpmiggpkeceo4gqhcf8j74qf2tfu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzt0P5RXk9IB0u4jWr4if_w_4HqlfDhT0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "330667782196-573ghpmiggpkeceo4gqhcf8j74qf2tfu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7773722896374259~4410145697"
+    }
+  ],
+  "configuration_version": "1"
+}
