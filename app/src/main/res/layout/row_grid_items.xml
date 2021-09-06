@@ -16,15 +16,17 @@
         android:orientation="horizontal"
         >
         <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:cardCornerRadius="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
             android:layout_margin="5dp"
+            android:layout_gravity="center"
+
             >
             <ImageView
                 android:id="@+id/country_flag"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 android:src="@drawable/icon_72x72"
                 />

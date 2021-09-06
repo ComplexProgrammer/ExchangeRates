@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import exchangerates.complexprogrammer.uz.models.NetworkUtil;
 import exchangerates.complexprogrammer.uz.models.Response;
 import exchangerates.complexprogrammer.uz.services.ApiClient;
 import exchangerates.complexprogrammer.uz.services.GlideApp;
+import exchangerates.complexprogrammer.uz.services.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
             }
             ImageView imageView = convertView.findViewById(R.id.imageview);
             ImageView country_flag = convertView.findViewById(R.id.country_flag);
-
             // url for .svg image
             String url = "https://restcountries.eu/data/uzb.svg";
 
@@ -130,7 +131,10 @@ public class MainActivity extends AppCompatActivity {
             TextView Rate=convertView.findViewById(R.id.Rate);
             TextView Diff=convertView.findViewById(R.id.Diff);
             TextView Date=convertView.findViewById(R.id.Date);
-            String country_flag_url = "https://restcountries.eu/data/"+ResponseList.get(position).getCcy()+".svg";
+            String country_flag_url = "http://complexprogrammer.uz:4444/Content/flag_image/"+ResponseList.get(position).getCcy()+".svg";
+            Log.e("country_flag_url",country_flag_url);
+            Utils.fetchSvg(context, country_flag_url, country_flag);
+            //Utils.fetchSvg(context, url, imageView);
             Code.setText(ResponseList.get(position).getCode());
             Ccy.setText(ResponseList.get(position).getCcy());
             CcyNm.setText(ResponseList.get(position).getCcyNm_UZ());
@@ -138,15 +142,7 @@ public class MainActivity extends AppCompatActivity {
             Rate.setText(ResponseList.get(position).getRate()+"  so'm");
             Diff.setText(ResponseList.get(position).getDiff());
             Date.setText(ResponseList.get(position).getDate());
-            GlideApp.with(context)
-                    .load(country_flag_url)
-                    .error(R.drawable.icon_72x72)
-                    .into(country_flag);
-            GlideApp.with(context)
-                    .load(url)
-                    .apply(new RequestOptions().override(50, 50))
-                    .error(R.drawable.icon_72x72)
-                    .into(imageView);
+
             return convertView;
         }
     }
