@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/activity_no_internet.xml" value="0.20520833333333333" />
+        <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/row_grid_items.xml" value="0.10328638497652583" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/drawable/circular_bordershape.xml" value="0.1125" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/layout/activity_no_internet.xml" value="0.1" />
