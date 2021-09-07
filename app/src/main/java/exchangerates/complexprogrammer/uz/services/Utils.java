@@ -23,7 +23,7 @@ public class Utils {
     public static void fetchSvg(Context context, String url, final ImageView target) {
         if (httpClient == null) {
             httpClient = new OkHttpClient.Builder()
-                    .cache(new Cache(context.getCacheDir(), 50 * 1024 * 1014))
+                    .cache(new Cache(context.getCacheDir(), 5 * 1024 * 1024))
                     .build();
         }
 

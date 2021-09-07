@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageView = convertView.findViewById(R.id.imageview);
             ImageView country_flag = convertView.findViewById(R.id.country_flag);
             // url for .svg image
-            String url = "https://restcountries.eu/data/uzb.svg";
+            String url = "http://complexprogrammer.uz:4444/Content/flag_image/UZS.svg";
 
             // this method will load svg
             // image in your imageview
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             String country_flag_url = "http://complexprogrammer.uz:4444/Content/flag_image/"+ResponseList.get(position).getCcy()+".svg";
             Log.e("country_flag_url",country_flag_url);
             Utils.fetchSvg(context, country_flag_url, country_flag);
-            //Utils.fetchSvg(context, url, imageView);
+            Utils.fetchSvg(context, url, imageView);
             Code.setText(ResponseList.get(position).getCode());
             Ccy.setText(ResponseList.get(position).getCcy());
             CcyNm.setText(ResponseList.get(position).getCcyNm_UZ());
