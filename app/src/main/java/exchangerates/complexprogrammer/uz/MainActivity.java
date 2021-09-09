@@ -1,5 +1,6 @@
 package exchangerates.complexprogrammer.uz;
 
+import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 convertView=layoutInflater.inflate(R.layout.row_grid_items,parent,false);
             }
             ImageView imageView = convertView.findViewById(R.id.imageview);
+            ImageView imageDiff = convertView.findViewById(R.id.imageDiff);
             ImageView country_flag = convertView.findViewById(R.id.country_flag);
             // url for .svg image
             String url = "http://complexprogrammer.uz:4444/Content/flag_image/UZS.svg";
@@ -140,7 +142,24 @@ public class MainActivity extends AppCompatActivity {
             CcyNm.setText(ResponseList.get(position).getCcyNm_UZ());
             Nominal.setText(ResponseList.get(position).getNominal());
             Rate.setText(ResponseList.get(position).getRate()+"  so'm");
-            Diff.setText(ResponseList.get(position).getDiff());
+            Float diff=Float.parseFloat(ResponseList.get(position).getDiff());
+            //String diff=ResponseList.get(position).getDiff();
+            if(diff>0){
+                Diff.setText("+"+diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Green));
+                imageDiff.setImageResource(R.drawable.ic_baseline_trending_up_24);
+            }
+            if(diff==0){
+                Diff.setText(diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Gray));
+                imageDiff.setImageResource(R.drawable.minus);
+            }
+            if(diff<0){
+                Diff.setText(diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Red));
+                imageDiff.setImageResource(R.drawable.ic_baseline_trending_down_24);
+            }
+
             Date.setText(ResponseList.get(position).getDate());
 
             return convertView;
