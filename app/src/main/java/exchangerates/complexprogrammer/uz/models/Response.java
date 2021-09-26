@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Response implements Serializable {
 
-    private int id;
+    private String id;
     private String Code;
     private String Ccy;
     private String CcyNm_RU;
@@ -15,14 +15,14 @@ public class Response implements Serializable {
     private String Rate;
     private String Diff;
     private String Date;
-    public int getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
     public String getCode() {
         return Code;
     }
