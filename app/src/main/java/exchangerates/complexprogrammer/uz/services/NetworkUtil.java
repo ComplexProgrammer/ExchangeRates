@@ -1,26 +1,30 @@
-package exchangerates.complexprogrammer.uz.models;
+package exchangerates.complexprogrammer.uz.services;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 public class NetworkUtil {
-    public static String getConnectivityStatusString(Context context) {
+    public static boolean getConnectivityStatusString(Context context) {
         String status = "No internet is available";
+        boolean internet_yes=false;
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 status = "Wifi enabled";
-                return status;
+                internet_yes=true;
+                return internet_yes;
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 status = "Mobile data enabled";
-                return status;
+                internet_yes=true;
+                return internet_yes;
             }
         } else {
+            internet_yes=false;
             status = "No internet is available";
-            return status;
+            return internet_yes;
         }
-        return status;
+        return internet_yes;
     }
 }
