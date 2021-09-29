@@ -5,11 +5,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,17 +120,6 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Locale[] locales = Locale.getAvailableLocales();
-        for(Locale locale : locales){
-            Log.e("getDisplayCountry",locale.getDisplayCountry());
-            Log.e("getCountry",locale.getCountry());
-            Log.e("getDisplayScript",locale.getDisplayScript());
-            Log.e("getScript",locale.getScript());
-            Log.e("getDisplayLanguage",locale.getDisplayLanguage());
-            Log.e("getLanguage",locale.getLanguage());
-        }
-        Toast.makeText(this,ChangeLanguage.getLangCode(this),Toast.LENGTH_SHORT).show();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -299,11 +290,34 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.language_menu, menu);
+        String language=ChangeLanguage.getLangCode(this);
+
+        MenuItem uzbek = menu.findItem(R.id.uzbek);
+        MenuItem uzbekc = menu.findItem(R.id.uzbekc);
+        MenuItem english = menu.findItem(R.id.english);
+        MenuItem russian = menu.findItem(R.id.russian);
+        switch (language){
+            case "uz": uzbek.setVisible(false); break;
+            case "uzc": uzbekc.setVisible(false); break;
+            case "en": english.setVisible(false); break;
+            case "ru": russian.setVisible(false); break;
+
+        }
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.telegram:
+                try {
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/complexprogrammer"));
+                    startActivity(myIntent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(this, "No application can handle this request."
+                            + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                return true;
             case R.id.about:
                 LayoutInflater factory = LayoutInflater.from(MainActivity.this);
                 final View aboutView = factory.inflate(R.layout.about, null);

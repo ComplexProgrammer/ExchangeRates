@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/item1"
+        android:id="@+id/telegram"
         android:icon="@drawable/telegram"
         android:title="@string/telegram"
         app:showAsAction="ifRoom" />
@@ -21,6 +21,7 @@
                 android:title="@string/uzbek"
                 />
             <item
+                android:visible="false"
                 android:id="@+id/uzbekc"
                 android:orderInCategory="100"
                 android:title="@string/uzbekc"

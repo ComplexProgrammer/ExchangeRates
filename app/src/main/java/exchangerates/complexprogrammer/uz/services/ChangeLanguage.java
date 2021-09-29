@@ -16,46 +16,54 @@ public class ChangeLanguage {
     public static void setLocal(Context context, String langCode){
         Locale locale;
         Configuration config;
-        Locale[] locales = Locale.getAvailableLocales();
-        switch (langCode){
+        locale = new Locale(langCode);
+        Locale.setDefault(locale);
+        config = new Configuration();
+        config.locale = locale;
+        context.createConfigurationContext(config);
+        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
 
-            case "uz":
-                locale = new Locale.Builder().setLanguage("uz").setRegion("UZ").setScript("Latn").build();
-                Log.e("locale uz ",locale.getScript());
-
-                config = new Configuration();
-                config.setLocale(locale);
-                context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-             case "uzc":
-                 locale = new Locale.Builder().setLanguage("uz").setRegion("UZ").setScript("Cyrl").build();
-                 Log.e("locale uzc ",locale.getScript());
-                 config = new Configuration();
-                 config.setLocale(locale);
-                 context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-//                for(Locale locale : locales){
-//                    if(locale.getCountry().equalsIgnoreCase("UZ")
-//                            && locale.getScript().equalsIgnoreCase("Cyrl"))
-//                    {
-//                        Configuration config = new Configuration();
-//                        config.setLocale(locale);
-//                        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-//                    }
-//                }
-                case "en":
-                    locale = new Locale(langCode);
-                    Locale.setDefault(locale);
-                    config = new Configuration();
-                    config.locale = locale;
-                    context.createConfigurationContext(config);
-                    context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-                case "ru":
-                    locale = new Locale(langCode);
-                    Locale.setDefault(locale);
-                    config = new Configuration();
-                    config.locale = locale;
-                    context.createConfigurationContext(config);
-                    context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
-        }
+//        Locale[] locales = Locale.getAvailableLocales();
+//        switch (langCode){
+//
+//            case "uz":
+//                locale = new Locale.Builder().setLanguage("uz").setRegion("UZ").setScript("Latn").build();
+//                Log.e("locale uz ",locale.getScript());
+//
+//                config = new Configuration();
+//                config.setLocale(locale);
+//                context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+////             case "uzc":
+////                 locale = new Locale.Builder().setLanguage("uz").setRegion("UZ").setScript("Cyrl").build();
+////                 Log.e("locale uzc ",locale.getScript());
+////                 config = new Configuration();
+////                 config.setLocale(locale);
+////                 context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+////                for(Locale locale : locales){
+////                    if(locale.getCountry().equalsIgnoreCase("UZ")
+////                            && locale.getScript().equalsIgnoreCase("Cyrl"))
+////                    {
+////                        Configuration config = new Configuration();
+////                        config.setLocale(locale);
+////                        context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+////                    }
+////                }
+//                case "en":
+//                    locale = new Locale(langCode);
+//                    Locale.setDefault(locale);
+//                    config = new Configuration();
+//                    config.locale = locale;
+//                    context.createConfigurationContext(config);
+//                    context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+//                case "ru":
+//                    locale = new Locale(langCode);
+//                    Locale.setDefault(locale);
+//                    config = new Configuration();
+//                    config.locale = locale;
+//                    context.createConfigurationContext(config);
+//                    context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+//
+//        }
 
 
 
