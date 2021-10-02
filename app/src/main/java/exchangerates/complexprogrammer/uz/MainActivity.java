@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Response> ResponseList =new ArrayList<>();
     GridView gridView;
-    ConstraintLayout constraintLayout;
-    TextView textView;
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
@@ -120,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ChangeLanguage.setLocal(this,ChangeLanguage.getLangCode(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -129,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
                 = new ColorDrawable(Color.parseColor("#FF018786"));
-        getSupportActionBar().setTitle(currentDateandTime+" "+getString(R.string.current_time));
-        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        getSupportActionBar().setTitle(getString(R.string.app_name));
+        //getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
         boolean status = NetworkUtil.getConnectivityStatusString(this);
         if(!status){
@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     String errorBody = response.errorBody().toString();
                     Log.e("errorBody",errorBody);
                     Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_LONG).show();
+
                 }
                 else {
                     String message="Xatolik yuz berdi. keyinroq yana urinib ko'rig";
@@ -187,10 +188,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Response>> call, Throwable t) {
-                Log.e("onFailure","onFailure");
-                Log.e("t",t.toString());
-                String message=t.getLocalizedMessage();
-                Toast.makeText(getBaseContext(),message,Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, ServerErrorActivity.class));
+
             }
         });
     }
@@ -370,7 +369,6 @@ public class MainActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-
     @Override
     public void onBackPressed() {
         super.finish();

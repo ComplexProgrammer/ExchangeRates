@@ -24,8 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash_screen);
-        ChangeLanguage language=new ChangeLanguage();
-        language.getLangCode(getBaseContext());
+        ChangeLanguage.getLangCode(this);
         Objects.requireNonNull(getSupportActionBar()).hide();
         logo=findViewById(R.id.imageView);
         title=findViewById(R.id.textView2);

@@ -19,5 +19,7 @@
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Разработчик</string>
     <string name="developer">Odiljon Gaybullaev</string>
+    <string name="back">назад</string>
+    <string name="server_error">Произошла ошибка на сервере. Пожалуйста, попробуйте позже.</string>
 
 </resources>

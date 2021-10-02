@@ -1,11 +1,27 @@
 package exchangerates.complexprogrammer.uz;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
+import java.util.Objects;
 
 import exchangerates.complexprogrammer.uz.models.Response;
 import exchangerates.complexprogrammer.uz.services.ChangeLanguage;
@@ -14,21 +30,53 @@ import exchangerates.complexprogrammer.uz.services.Utils;
 public class ViewByItem extends AppCompatActivity {
 
     Response Response;
-    ImageView flag_image,uzb_flag_image;
-    TextView Code,Ccy,CcyNm,Nominal,Rate,Diff,Date;
+    ImageView imageDiff,flag_image,uzb_flag_image;
+    TextView Code,Ccy,CcyNm,Nominal,Rate,Diff,Date,sum;
+    ImageView mIcon;
+    Button mFollow;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_by_item);
+        relativeLayout=findViewById(R.id.relativeLayout);
+        DisplayMetrics displayMetrics=new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int SCREEN_WIDTH=displayMetrics.widthPixels;
+        int SCREEN_HEIGHT=displayMetrics.heightPixels;
+        relativeLayout.setMinimumHeight(SCREEN_HEIGHT);
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mIcon = findViewById(R.id.ivProfile);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+        RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        mDrawable.setCircular(true);
+        mDrawable.setColorFilter(ContextCompat.getColor(ViewByItem.this, R.color.colorAccent), PorterDuff.Mode.DST_OVER);
+        mIcon.setImageDrawable(mDrawable);
+
+        mFollow = findViewById(R.id.btnFollow);
+        mFollow.setText(getString(R.string.back));
+        mFollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         Intent intent=getIntent();
-        flag_image=findViewById(R.id.flag_image);
-        uzb_flag_image=findViewById(R.id.uzb_flag_image);
         Code=findViewById(R.id.Code);
         Ccy=findViewById(R.id.Ccy);
         CcyNm=findViewById(R.id.CcyNm);
         Nominal=findViewById(R.id.Nominal);
         Rate=findViewById(R.id.Rate);
+        sum=findViewById(R.id.sum);
         Diff=findViewById(R.id.Diff);
+        imageDiff=findViewById(R.id.imageDiff);
+        flag_image=findViewById(R.id.flag_image);
+        uzb_flag_image=findViewById(R.id.uzb_flag_image);
+
         Date=findViewById(R.id.Date);
         if(intent.getExtras()!=null){
             Response = (Response) intent.getSerializableExtra("data");
@@ -37,7 +85,7 @@ public class ViewByItem extends AppCompatActivity {
             Utils.fetchSvg(this, country_flag_url, flag_image);
             Utils.fetchSvg(this, uzb_flag_url, uzb_flag_image);
             Ccy.setText(Response.getCcy());
-            Code.setText(Response.getCode());
+           // Code.setText(Response.getCode());
             String langCode= ChangeLanguage.getLangCode(getBaseContext());
             switch (langCode) {
                 case "uz":
@@ -55,7 +103,23 @@ public class ViewByItem extends AppCompatActivity {
             }
             Nominal.setText(Response.getNominal());
             Rate.setText(Response.getRate());
-            Diff.setText(Response.getDiff());
+            sum.setText(getString(R.string.sum));
+            Float diff=Float.parseFloat(Response.getDiff());
+            if(diff>0){
+                Diff.setText("+"+diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Green));
+                imageDiff.setImageResource(R.drawable.ic_baseline_trending_up_24);
+            }
+            if(diff==0){
+                Diff.setText(diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Gray));
+                imageDiff.setImageResource(R.drawable.minus);
+            }
+            if(diff<0){
+                Diff.setText(diff.toString());
+                Diff.setTextColor(getResources().getColor(R.color.Red));
+                imageDiff.setImageResource(R.drawable.ic_baseline_trending_down_24);
+            }
             Date.setText(Response.getDate());
 
         }

@@ -19,4 +19,6 @@
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Дастурчи</string>
     <string name="developer">Одилжон Гайбуллаев</string>
+    <string name="back">орқага</string>
+    <string name="server_error">Серверда хатолик юз берди. Илтимос кейинроқ қайта уриниб кўринг.</string>
 </resources>

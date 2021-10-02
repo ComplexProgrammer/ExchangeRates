@@ -19,5 +19,7 @@
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Dasturchi</string>
     <string name="developer">Odiljon Gaybullaev</string>
+    <string name="back">orqaga</string>
+    <string name="server_error">Serverda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko\'ring.</string>
 
 </resources>
