@@ -121,7 +121,6 @@ public class ViewByItem extends AppCompatActivity {
                 imageDiff.setImageResource(R.drawable.ic_baseline_trending_down_24);
             }
             Date.setText(Response.getDate());
-
         }
     }
 }
