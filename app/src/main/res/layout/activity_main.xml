@@ -32,6 +32,7 @@
             app:layout_constraintVertical_bias="0" />
 
         <com.google.android.ads.nativetemplates.TemplateView
+            android:visibility="gone"
             android:id="@+id/my_template"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
