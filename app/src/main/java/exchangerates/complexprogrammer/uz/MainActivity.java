@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageDiff = convertView.findViewById(R.id.imageDiff);
             ImageView country_flag = convertView.findViewById(R.id.country_flag);
             // url for .svg image
-            String url = "http://complexprogrammer.uz:4444/Content/flag_image/UZS.svg";
+            String url = "http://195.158.6.195:4444/Content/flag_image/UZS.svg";
 
             // this method will load svg
             // image in your imageview
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             TextView Rate=convertView.findViewById(R.id.Rate);
             TextView Diff=convertView.findViewById(R.id.Diff);
             TextView Date=convertView.findViewById(R.id.Date);
-            String country_flag_url = "http://complexprogrammer.uz:4444/Content/flag_image/"+ ResponseList.get(position).getCcy()+".svg";
+            String country_flag_url = "http://195.158.6.195:4444/Content/flag_image/"+ ResponseList.get(position).getCcy()+".svg";
             Utils.fetchSvg(context, country_flag_url, country_flag);
             Utils.fetchSvg(context, url, imageView);
             Code.setText(ResponseList.get(position).getCode());

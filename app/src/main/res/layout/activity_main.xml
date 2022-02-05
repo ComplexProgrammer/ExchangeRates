@@ -18,7 +18,7 @@
         android:background="@color/LightGrey"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="150dp">
+        android:layout_marginBottom="50dp">
 
         <GridView
             android:id="@+id/gridView"

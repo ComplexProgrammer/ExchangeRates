@@ -1,5 +1,6 @@
 package exchangerates.complexprogrammer.uz;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -18,8 +20,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.Objects;
 
@@ -35,6 +42,67 @@ public class ViewByItem extends AppCompatActivity {
     ImageView mIcon;
     Button mFollow;
     RelativeLayout relativeLayout;
+    private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
+    private static final String TAG = "MainActivity";
+    private InterstitialAd interstitialAd;
+    public void loadAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(
+                this,
+                AD_UNIT_ID,
+                adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        interstitialAd.show(ViewByItem.this);
+                        //MainActivity.this.interstitialAd = interstitialAd;
+                        interstitialAd.setFullScreenContentCallback(
+                                new FullScreenContentCallback() {
+                                    @Override
+                                    public void onAdDismissedFullScreenContent() {
+                                        // Called when fullscreen content is dismissed.
+                                        // Make sure to set your reference to null so you don't
+                                        // show it a second time.
+                                        ViewByItem.this.interstitialAd = null;
+                                        Log.d("TAG", "The ad was dismissed.");
+                                    }
+
+                                    @Override
+                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                        // Called when fullscreen content failed to show.
+                                        // Make sure to set your reference to null so you don't
+                                        // show it a second time.
+                                        ViewByItem.this.interstitialAd = null;
+                                        Log.d("TAG", "The ad failed to show.");
+                                    }
+
+                                    @Override
+                                    public void onAdShowedFullScreenContent() {
+                                        // Called when fullscreen content is shown.
+                                        Log.d("TAG", "The ad was shown.");
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        interstitialAd = null;
+
+                        String error =
+                                String.format(
+                                        "domain: %s, code: %d, message: %s",
+                                        loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
+//                        Toast.makeText(
+//                                MainActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT)
+//                                .show();
+                    }
+                });
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -47,6 +115,7 @@ public class ViewByItem extends AppCompatActivity {
         int SCREEN_WIDTH=displayMetrics.widthPixels;
         int SCREEN_HEIGHT=displayMetrics.heightPixels;
         relativeLayout.setMinimumHeight(SCREEN_HEIGHT);
+        loadAd();
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -80,8 +149,8 @@ public class ViewByItem extends AppCompatActivity {
         Date=findViewById(R.id.Date);
         if(intent.getExtras()!=null){
             Response = (Response) intent.getSerializableExtra("data");
-            String country_flag_url = "http://complexprogrammer.uz:4444/Content/flag_image/"+ Response.getCcy()+".svg";
-            String uzb_flag_url = "http://complexprogrammer.uz:4444/Content/flag_image/UZS.svg";
+            String country_flag_url = "http://195.158.6.195:4444/Content/flag_image/"+ Response.getCcy()+".svg";
+            String uzb_flag_url = "http://195.158.6.195:4444/Content/flag_image/UZS.svg";
             Utils.fetchSvg(this, country_flag_url, flag_image);
             Utils.fetchSvg(this, uzb_flag_url, uzb_flag_image);
             Ccy.setText(Response.getCcy());
