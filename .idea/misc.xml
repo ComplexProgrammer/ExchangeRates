@@ -5,7 +5,6 @@
       <map>
         <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
         <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/activity_no_internet.xml" value="0.20520833333333333" />
-        <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/activity_view_by_item.xml" value="0.1703125" />
         <entry key="..\:/AndroidStudio/ExchangeRates/app/src/main/res/layout/row_grid_items.xml" value="0.10328638497652583" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/drawable/circular_bordershape.xml" value="0.1125" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/drawable/ic_baseline_minimize_24.xml" value="0.1125" />
@@ -21,13 +20,15 @@
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/layout/content_main.xml" value="0.1" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/layout/fragment_no_internet.xml" value="0.1" />
         <entry key="..\:/My Programm/My Android Studio programm/ExchangeRates/app/src/main/res/layout/row_grid_items.xml" value="0.1" />
+        <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.5661458333333333" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/drawable/ic_baseline_keyboard_backspace_24.xml" value="0.1" />
+        <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/drawable/round_button.xml" value="0.2855" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/about.xml" value="0.1" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_no_internet.xml" value="0.1" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_server_error.xml" value="0.1" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
-        <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_view_by_item.xml" value="0.1" />
+        <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/activity_view_by_item.xml" value="0.67" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/round_button.xml" value="0.1621376811594203" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/layout/row_grid_items.xml" value="0.1" />
         <entry key="..\:/Users/odilj/AndroidStudioProjects/ExchangeRates/app/src/main/res/menu/language_menu.xml" value="0.2" />
