@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -20,13 +21,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
 
 import java.util.Objects;
 
@@ -115,10 +121,39 @@ public class ViewByItem extends AppCompatActivity {
         int SCREEN_WIDTH=displayMetrics.widthPixels;
         int SCREEN_HEIGHT=displayMetrics.heightPixels;
         relativeLayout.setMinimumHeight(SCREEN_HEIGHT);
-        loadAd();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadAd();
+            }
+        }, 5000);
+
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd NativeAd) {
+                        // Show the ad.
+
+                        TemplateView template = findViewById(R.id.my_template);
+                        template.setNativeAd(NativeAd);
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError adError) {
+                        // Handle the failure by logging, altering the UI, and so on.
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build();
+//        adLoader.loadAd(new AdRequest.Builder().build());
+        adLoader.loadAds(new AdRequest.Builder().build(), 5);
         mIcon = findViewById(R.id.ivProfile);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -148,9 +183,9 @@ public class ViewByItem extends AppCompatActivity {
 
         Date=findViewById(R.id.Date);
         if(intent.getExtras()!=null){
-            Response = (Response) intent.getSerializableExtra("data");
-            String country_flag_url = "http://195.158.6.195:4444/Content/flag_image/"+ Response.getCcy()+".svg";
-            String uzb_flag_url = "http://195.158.6.195:4444/Content/flag_image/UZS.svg";
+            Response = (Response) intent.getSerializableExtra("ResponseData");
+            String country_flag_url = getString(R.string.file_url) + "/flag_image/"+ Response.getCcy()+".svg";
+            String uzb_flag_url = getString(R.string.file_url) + "/flag_image/UZS.svg";
             Utils.fetchSvg(this, country_flag_url, flag_image);
             Utils.fetchSvg(this, uzb_flag_url, uzb_flag_image);
             Ccy.setText(Response.getCcy());

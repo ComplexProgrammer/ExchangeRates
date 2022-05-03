@@ -3,7 +3,6 @@ package exchangerates.complexprogrammer.uz;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -13,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Locale;
 
 import exchangerates.complexprogrammer.uz.models.Response;
+import exchangerates.complexprogrammer.uz.models.ResponseData;
 import exchangerates.complexprogrammer.uz.services.NetworkUtil;
 import exchangerates.complexprogrammer.uz.services.ApiClient;
 import exchangerates.complexprogrammer.uz.services.ChangeLanguage;
@@ -137,36 +138,18 @@ public class MainActivity extends AppCompatActivity {
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        loadAd();
-        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd NativeAd) {
-                        // Show the ad.
-
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setNativeAd(NativeAd);
-                    }
-                })
-                .withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError adError) {
-                        // Handle the failure by logging, altering the UI, and so on.
-                    }
-                })
-                .withNativeAdOptions(new NativeAdOptions.Builder()
-                        // Methods in the NativeAdOptions.Builder class can be
-                        // used here to specify individual options settings.
-                        .build())
-                .build();
-//        adLoader.loadAd(new AdRequest.Builder().build());
-        adLoader.loadAds(new AdRequest.Builder().build(), 5);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadAd();
+            }
+        }, 3000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
-                = new ColorDrawable(Color.parseColor("#FF018786"));
+                = new ColorDrawable(Color.parseColor("#90ee90"));
         getSupportActionBar().setTitle(getString(R.string.app_name));
-        //getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
         boolean status = NetworkUtil.getConnectivityStatusString(this);
         if(!status){
@@ -178,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("data", ResponseList.get(position)));
+                    startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                     String message= ResponseList.get(position).getCcy();
                     Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
@@ -186,15 +169,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void LoadData(){
-        Call<List<Response>> _response = ApiClient.getInterface().GetExchangeRates();
-
-        _response.enqueue(new Callback<List<Response>>() {
+        Call<ResponseData> _response = ApiClient.getInterface().GetExchangeRates();
+        _response.enqueue(new Callback<ResponseData>() {
             @Override
-            public void onResponse(Call<List<Response>> call, retrofit2.Response<List<Response>> response) {
+            public void onResponse(Call<ResponseData> call, retrofit2.Response<ResponseData> response) {
                 Log.e("onResponse","onResponse");
 
                 if(response.isSuccessful()){
-                    ResponseList =response.body();
+                    ResponseList =response.body().data;
                     Log.e("isSuccessful","isSuccessful");
 
                     CustomAdapter customAdapter=new CustomAdapter(ResponseList,getApplicationContext());
@@ -213,9 +195,8 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),message,Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
-            public void onFailure(Call<List<Response>> call, Throwable t) {
+            public void onFailure(Call<ResponseData> call, Throwable t) {
                 startActivity(new Intent(MainActivity.this, ServerErrorActivity.class));
 
             }
@@ -256,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView imageDiff = convertView.findViewById(R.id.imageDiff);
             ImageView country_flag = convertView.findViewById(R.id.country_flag);
             // url for .svg image
-            String url = "http://195.158.6.195:4444/Content/flag_image/UZS.svg";
+            String url = getString(R.string.file_url) + "/flag_image/UZS.svg";
 
             // this method will load svg
             // image in your imageview
@@ -268,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             TextView Rate=convertView.findViewById(R.id.Rate);
             TextView Diff=convertView.findViewById(R.id.Diff);
             TextView Date=convertView.findViewById(R.id.Date);
-            String country_flag_url = "http://195.158.6.195:4444/Content/flag_image/"+ ResponseList.get(position).getCcy()+".svg";
+            String country_flag_url = getString(R.string.file_url) + "/flag_image/"+ ResponseList.get(position).getCcy()+".svg";
             Utils.fetchSvg(context, country_flag_url, country_flag);
             Utils.fetchSvg(context, url, imageView);
             Code.setText(ResponseList.get(position).getCode());

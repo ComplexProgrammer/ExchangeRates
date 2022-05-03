@@ -27,7 +27,7 @@ public class Utils {
                     .build();
         }
 
-        // here we are making HTTP call to fetch data from URL.
+        // here we are making HTTP call to fetch ResponseData from URL.
         Request request = new Request.Builder().url(url).build();
         httpClient.newCall(request).enqueue(new Callback() {
             @Override

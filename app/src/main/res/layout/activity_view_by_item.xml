@@ -165,6 +165,17 @@
             android:background="@drawable/round_button"
             android:drawableStart="@drawable/ic_baseline_keyboard_backspace_24"
             android:textColor="#ffff" />
+
+        <com.google.android.ads.nativetemplates.TemplateView
+            android:id="@+id/my_template"
+            android:layout_below="@+id/btnFollow"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:gnt_template_type="@layout/gnt_small_template_view"
+
+             />
         <com.google.android.gms.ads.AdView
             xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"

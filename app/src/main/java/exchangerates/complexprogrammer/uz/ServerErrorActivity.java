@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -22,7 +24,14 @@ public class ServerErrorActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_error);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz"));
+                startActivity(i);
+            }
+        }, 5000);
     }
 
     @Override

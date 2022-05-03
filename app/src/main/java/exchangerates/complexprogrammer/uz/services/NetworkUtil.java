@@ -16,7 +16,7 @@ public class NetworkUtil {
                 internet_yes=true;
                 return internet_yes;
             } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-                status = "Mobile data enabled";
+                status = "Mobile ResponseData enabled";
                 internet_yes=true;
                 return internet_yes;
             }
