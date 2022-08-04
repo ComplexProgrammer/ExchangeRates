@@ -40,7 +40,8 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7773722896374259~4410145697" />
-
+        <meta-data android:name="applovin.sdk.key"
+            android:value="TAb12Zp_lSrd3UxrbV4iClqMHePfMgItpKNHNnCpIBcADkhxT49q8AeLEi7xbTKOCSqqGVTTbRLHRC6fnW4T9p"  />
         <activity
             android:name=".MainActivity"
             android:exported="true"

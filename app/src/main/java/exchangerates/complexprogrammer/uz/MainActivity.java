@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +24,17 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.adcolony.sdk.AdColony;
+import com.adcolony.sdk.AdColonyAdOptions;
+import com.adcolony.sdk.AdColonyAdSize;
+import com.adcolony.sdk.AdColonyAdView;
+import com.adcolony.sdk.AdColonyAdViewListener;
+import com.adcolony.sdk.AdColonyAppOptions;
+import com.adcolony.sdk.AdColonyZone;
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -61,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Response> ResponseList =new ArrayList<>();
     GridView gridView;
+    private final String APP_ID = "app47ccb4f1349341b5a2";
+    private final String ZONE_ID = "vz4b1cba6afa79468984";
+    private AdColonyAdViewListener listener;
+    private AdColonyAdOptions adOptions;
+    private RelativeLayout adContainer;
+    private AdColonyAdView _adView;
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
@@ -128,12 +143,63 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
 
             }
         });
+        adContainer = findViewById(R.id.ad_container);
+        AdColonyAppOptions appOptions = new AdColonyAppOptions();
+
+        // Configure AdColony in your launching Activity's onCreate() method so that cached ads can
+        // be available as soon as possible.
+        AdColony.configure(this, appOptions, APP_ID);
+
+        listener = new AdColonyAdViewListener() {
+            @Override
+            public void onRequestFilled(AdColonyAdView adColonyAdView) {
+                Log.d(TAG, "onRequestFilled");
+                adContainer.addView(adColonyAdView);
+                _adView = adColonyAdView;
+
+            }
+
+            @Override
+            public void onRequestNotFilled(AdColonyZone zone) {
+                super.onRequestNotFilled(zone);
+                Log.d(TAG, "onRequestNotFilled");
+            }
+
+            @Override
+            public void onOpened(AdColonyAdView ad) {
+                super.onOpened(ad);
+                Log.d(TAG, "onOpened");
+            }
+
+            @Override
+            public void onClosed(AdColonyAdView ad) {
+                super.onClosed(ad);
+                Log.d(TAG, "onClosed");
+            }
+
+            @Override
+            public void onClicked(AdColonyAdView ad) {
+                super.onClicked(ad);
+                Log.d(TAG, "onClicked");
+            }
+
+            @Override
+            public void onLeftApplication(AdColonyAdView ad) {
+                super.onLeftApplication(ad);
+                Log.d(TAG, "onLeftApplication");
+            }
+        };
+        adOptions = new AdColonyAdOptions();
+
+        //Request Ad
+        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
 
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -147,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
-                = new ColorDrawable(Color.parseColor("#90ee90"));
+//                = new ColorDrawable(Color.parseColor("#90ee90"));
+                = new ColorDrawable(getResources().getColor(R.color.gnt_blue));
         getSupportActionBar().setTitle(getString(R.string.app_name));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
@@ -162,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                    String message= ResponseList.get(position).getCcy();
+                    String message = ResponseList.get(position).getCcy();
                     Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
             });
@@ -228,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
             return 0;
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView==null){
@@ -272,9 +340,8 @@ public class MainActivity extends AppCompatActivity {
             Rate.setText(ResponseList.get(position).getRate()+" "+getString(R.string.sum));
             Nominal.setText(ResponseList.get(position).getNominal());
             Float diff=Float.parseFloat(ResponseList.get(position).getDiff());
-            //String diff=ResponseList.get(position).getDiff();
             if(diff>0){
-                Diff.setText("+"+diff.toString());
+                Diff.setText("+"+ diff);
                 Diff.setTextColor(getResources().getColor(R.color.Green));
                 imageDiff.setImageResource(R.drawable.ic_baseline_trending_up_24);
             }
