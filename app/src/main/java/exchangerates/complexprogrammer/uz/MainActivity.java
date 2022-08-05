@@ -50,6 +50,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
+
     public void loadAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -214,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
 //                = new ColorDrawable(Color.parseColor("#90ee90"));
-                = new ColorDrawable(getResources().getColor(R.color.gnt_blue));
+                = new ColorDrawable(getResources().getColor(R.color.SteelBlue));
         getSupportActionBar().setTitle(getString(R.string.app_name));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
@@ -385,7 +388,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.telegram:
                 try {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/complexprogrammer"));
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/uzb_valyuta_kurslari_bot"));
                     startActivity(myIntent);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "No application can handle this request."

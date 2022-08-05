@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="5dp"
     app:cardCornerRadius="10dp"
-    app:cardBackgroundColor="@color/gnt_blue"
+    app:cardBackgroundColor="@color/SkyBlue"
     app:cardUseCompatPadding="true"
     >
     <LinearLayout
@@ -74,6 +74,7 @@
 
             <ImageView
                 android:id="@+id/imageDiff"
+                android:background="@color/SkyBlue"
                 android:layout_width="40dp"
                 android:layout_height="20dp"
                 android:scaleType="centerCrop"
