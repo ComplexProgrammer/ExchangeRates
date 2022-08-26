@@ -44,14 +44,18 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,7 +72,7 @@ import exchangerates.complexprogrammer.uz.services.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
     private List<Response> ResponseList =new ArrayList<>();
     GridView gridView;
@@ -81,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
-
+    private RewardedInterstitialAd rewardedInterstitialAd;
+    public Boolean load_ad=true;
     public void loadAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -139,6 +144,51 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+    public void loadRewardedInterstitialAd(int position){
+        RewardedInterstitialAd.load(MainActivity.this, "ca-app-pub-7773722896374259/4867703081",
+                new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(RewardedInterstitialAd ad) {
+                        Log.d(TAG, "Ad was loaded.");
+                        rewardedInterstitialAd = ad;
+                        rewardedInterstitialAd.show(/* Activity */ MainActivity.this,/*
+    OnUserEarnedRewardListener */ MainActivity.this);
+                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdClicked() {
+                                super.onAdClicked();
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                super.onAdFailedToShowFullScreenContent(adError);
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                super.onAdImpression();
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                super.onAdShowedFullScreenContent();
+                            }
+                        });
+                    }
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError loadAdError) {
+                        Log.d(TAG, loadAdError.toString());
+                        rewardedInterstitialAd = null;
+                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                    }
+                });
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,9 +260,11 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                loadAd();
+                if(load_ad){
+                    loadAd();
+                }
             }
-        }, 3000);
+        }, 20000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
@@ -231,7 +283,8 @@ public class MainActivity extends AppCompatActivity {
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                    load_ad=false;
+                    loadRewardedInterstitialAd(position);
                     String message = ResponseList.get(position).getCcy();
                     Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
@@ -272,6 +325,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+
+    }
+
     public class CustomAdapter extends BaseAdapter {
         private final List<Response> ResponseList;
         private final Context context;

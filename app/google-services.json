@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "330667782196",
+    "firebase_url": "https://exchangerates-324716-default-rtdb.firebaseio.com",
     "project_id": "exchangerates-324716",
     "storage_bucket": "exchangerates-324716.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "330667782196-jt9r6204kmodp7503licbcrkmsi6bksr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "exchangerates.complexprogrammer.uz",
+            "certificate_hash": "2b9c9cbd938c78c587999150f2f24f86582a81de"
+          }
+        },
         {
           "client_id": "330667782196-573ghpmiggpkeceo4gqhcf8j74qf2tfu.apps.googleusercontent.com",
           "client_type": 3

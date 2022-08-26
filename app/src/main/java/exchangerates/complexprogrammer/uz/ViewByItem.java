@@ -180,11 +180,19 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                         rewardedInterstitialAd = ad;
                         rewardedInterstitialAd.show(/* Activity */ ViewByItem.this,/*
     OnUserEarnedRewardListener */ ViewByItem.this);
+                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                super.onAdDismissedFullScreenContent();
+                                onBackPressed();
+                            }
+                        });
                     }
                     @Override
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
                         rewardedInterstitialAd = null;
+                        onBackPressed();
                     }
                 });
     }
@@ -205,7 +213,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
             public void run() {
 //                loadAd();
 //                LoadRewardedAd();
-                loadRewardedInterstitialAd();
             }
         }, 5000);
         adContainer = findViewById(R.id.ad_container);
@@ -296,7 +303,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
         mFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                loadRewardedInterstitialAd();
             }
         });
         Intent intent=getIntent();
