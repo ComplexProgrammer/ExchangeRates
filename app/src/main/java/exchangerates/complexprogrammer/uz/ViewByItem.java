@@ -89,9 +89,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                                 new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
-                                        // Called when fullscreen content is dismissed.
-                                        // Make sure to set your reference to null so you don't
-                                        // show it a second time.
+                                        onBackPressed();
                                         ViewByItem.this.interstitialAd = null;
                                         Log.d("TAG", "The ad was dismissed.");
                                     }
@@ -115,7 +113,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
+                        onBackPressed();
                         Log.i(TAG, loadAdError.getMessage());
                         interstitialAd = null;
 
@@ -303,7 +301,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
         mFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadRewardedInterstitialAd();
+                loadAd();
             }
         });
         Intent intent=getIntent();

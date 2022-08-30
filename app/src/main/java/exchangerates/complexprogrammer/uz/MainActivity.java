@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     private InterstitialAd interstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     public Boolean load_ad=true;
-    public void loadAd() {
+    public void loadAd(int position) {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
                 this,
@@ -104,10 +104,9 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                                 new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
-                                        // Called when fullscreen content is dismissed.
-                                        // Make sure to set your reference to null so you don't
-                                        // show it a second time.
+                                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                                         MainActivity.this.interstitialAd = null;
+
                                         Log.d("TAG", "The ad was dismissed.");
                                     }
 
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
+                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                         Log.i(TAG, loadAdError.getMessage());
                         interstitialAd = null;
 
@@ -261,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
             @Override
             public void run() {
                 if(load_ad){
-                    loadAd();
+
                 }
             }
         }, 20000);
@@ -284,7 +283,8 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
-                    loadRewardedInterstitialAd(position);
+//                    loadRewardedInterstitialAd(position);
+                    loadAd(position);
                     String message = ResponseList.get(position).getCcy();
                     Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
