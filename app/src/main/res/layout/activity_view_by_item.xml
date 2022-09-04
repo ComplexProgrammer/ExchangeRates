@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp">
-        <RelativeLayout
-            android:id="@+id/ad_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:gravity="center" />
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/ad_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:gravity="center" />-->
         <ImageView
             android:id="@+id/ivProfile"
             android:layout_width="120dp"

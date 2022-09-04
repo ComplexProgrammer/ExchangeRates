@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adcolony.sdk.AdColony;
 import com.adcolony.sdk.AdColonyAdOptions;
@@ -194,6 +195,18 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                     }
                 });
     }
+    public void loadBannerAd(){
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadBannerAd();
+//                Toast.makeText(ViewByItem.this, "loadBannerAd()", Toast.LENGTH_SHORT).show();
+            }
+        }, 10000);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -213,59 +226,57 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 //                LoadRewardedAd();
             }
         }, 5000);
-        adContainer = findViewById(R.id.ad_container);
-        AdColonyAppOptions appOptions = new AdColonyAppOptions();
-
-        // Configure AdColony in your launching Activity's onCreate() method so that cached ads can
-        // be available as soon as possible.
-        AdColony.configure(this, appOptions, APP_ID);
-
-        listener = new AdColonyAdViewListener() {
-            @Override
-            public void onRequestFilled(AdColonyAdView adColonyAdView) {
-                Log.d(TAG, "onRequestFilled");
-                adContainer.addView(adColonyAdView);
-//                relativeLayout.addView(adColonyAdView);
-
-            }
-
-            @Override
-            public void onRequestNotFilled(AdColonyZone zone) {
-                super.onRequestNotFilled(zone);
-                Log.d(TAG, "onRequestNotFilled");
-            }
-
-            @Override
-            public void onOpened(AdColonyAdView ad) {
-                super.onOpened(ad);
-                Log.d(TAG, "onOpened");
-            }
-
-            @Override
-            public void onClosed(AdColonyAdView ad) {
-                super.onClosed(ad);
-                Log.d(TAG, "onClosed");
-            }
-
-            @Override
-            public void onClicked(AdColonyAdView ad) {
-                super.onClicked(ad);
-                Log.d(TAG, "onClicked");
-            }
-
-            @Override
-            public void onLeftApplication(AdColonyAdView ad) {
-                super.onLeftApplication(ad);
-                Log.d(TAG, "onLeftApplication");
-            }
-        };
-        adOptions = new AdColonyAdOptions();
-
-        //Request Ad
-        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        adContainer = findViewById(R.id.ad_container);
+//        AdColonyAppOptions appOptions = new AdColonyAppOptions();
+//
+//        // Configure AdColony in your launching Activity's onCreate() method so that cached ads can
+//        // be available as soon as possible.
+//        AdColony.configure(this, appOptions, APP_ID);
+//
+//        listener = new AdColonyAdViewListener() {
+//            @Override
+//            public void onRequestFilled(AdColonyAdView adColonyAdView) {
+//                Log.d(TAG, "onRequestFilled");
+//                adContainer.addView(adColonyAdView);
+////                relativeLayout.addView(adColonyAdView);
+//
+//            }
+//
+//            @Override
+//            public void onRequestNotFilled(AdColonyZone zone) {
+//                super.onRequestNotFilled(zone);
+//                Log.d(TAG, "onRequestNotFilled");
+//            }
+//
+//            @Override
+//            public void onOpened(AdColonyAdView ad) {
+//                super.onOpened(ad);
+//                Log.d(TAG, "onOpened");
+//            }
+//
+//            @Override
+//            public void onClosed(AdColonyAdView ad) {
+//                super.onClosed(ad);
+//                Log.d(TAG, "onClosed");
+//            }
+//
+//            @Override
+//            public void onClicked(AdColonyAdView ad) {
+//                super.onClicked(ad);
+//                Log.d(TAG, "onClicked");
+//            }
+//
+//            @Override
+//            public void onLeftApplication(AdColonyAdView ad) {
+//                super.onLeftApplication(ad);
+//                Log.d(TAG, "onLeftApplication");
+//            }
+//        };
+//        adOptions = new AdColonyAdOptions();
+//
+//        //Request Ad
+//        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
+        loadBannerAd();
         AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
