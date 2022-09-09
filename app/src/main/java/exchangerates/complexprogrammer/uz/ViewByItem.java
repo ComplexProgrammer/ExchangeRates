@@ -276,7 +276,8 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 //
 //        //Request Ad
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
-        loadBannerAd();
+
+//        loadBannerAd();
         AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
@@ -312,7 +313,8 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
         mFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadAd();
+//                loadAd();
+                onBackPressed();
             }
         });
         Intent intent=getIntent();

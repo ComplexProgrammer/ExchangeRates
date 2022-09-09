@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 //                    loadRewardedInterstitialAd(position);
                     loadAd(position);
                     String message = ResponseList.get(position).getCcy();
-                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+//                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
             });
         }
