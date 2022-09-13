@@ -285,8 +285,15 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
-//                    loadRewardedInterstitialAd(position);
-                    loadAd(position);
+
+//                    Toast.makeText(MainActivity.this,position+"",Toast.LENGTH_SHORT).show();
+                    if(position%5==0){
+                        loadRewardedInterstitialAd(position);
+//                        loadAd(position);
+                    }
+                    else{
+                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                    }
                     String message = ResponseList.get(position).getCcy();
 //                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
@@ -312,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     // Get response errorBody
                     String errorBody = response.errorBody().toString();
                     Log.e("errorBody",errorBody);
-                    Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_SHORT).show();
 
                 }
                 else {

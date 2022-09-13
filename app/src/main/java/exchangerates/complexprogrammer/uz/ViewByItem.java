@@ -90,7 +90,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                                 new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
-                                        onBackPressed();
                                         ViewByItem.this.interstitialAd = null;
                                         Log.d("TAG", "The ad was dismissed.");
                                     }
@@ -114,7 +113,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        onBackPressed();
                         Log.i(TAG, loadAdError.getMessage());
                         interstitialAd = null;
 
@@ -135,7 +133,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error.
+                        onBackPressed();
                         Log.d(TAG, loadAdError.toString());
                         mRewardedAd = null;
                     }
@@ -160,6 +158,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     super.onAdDismissedFullScreenContent();
+                                    onBackPressed();
 //                                    loadAd();
                                 }
                             });
@@ -277,7 +276,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 //        //Request Ad
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
 
-//        loadBannerAd();
+        loadBannerAd();
         AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
                 .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
@@ -313,7 +312,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
         mFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                loadAd();
+//                LoadRewardedAd();
                 onBackPressed();
             }
         });
