@@ -50,6 +50,8 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import exchangerates.complexprogrammer.uz.models.Response;
 import exchangerates.complexprogrammer.uz.services.ChangeLanguage;
@@ -73,6 +75,9 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
     private InterstitialAd interstitialAd;
     private RewardedAd mRewardedAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
+    private Handler handler = new Handler();
+    private Runnable myRunnable;
+    private Runnable myRunnable2;
     public void loadAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -198,13 +203,46 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        new Handler().postDelayed(new Runnable() {
-            @Override
+//        Handler handler =  new Handler();
+        myRunnable = new Runnable() {
             public void run() {
                 loadBannerAd();
 //                Toast.makeText(ViewByItem.this, "loadBannerAd()", Toast.LENGTH_SHORT).show();
             }
-        }, 10000);
+        };
+        handler.postDelayed(myRunnable, 10000);
+    }
+    public void loadNativeAd(){
+        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd NativeAd) {
+                        // Show the ad.
+
+                        TemplateView template = findViewById(R.id.my_template);
+                        template.setNativeAd(NativeAd);
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError adError) {
+                        // Handle the failure by logging, altering the UI, and so on.
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build();
+//        adLoader.loadAd(new AdRequest.Builder().build());
+        adLoader.loadAds(new AdRequest.Builder().build(), 5);
+        myRunnable2 = new Runnable() {
+            public void run() {
+                loadNativeAd();
+//                Toast.makeText(ViewByItem.this, "loadNativeAd()", Toast.LENGTH_SHORT).show();
+            }
+        };
+        handler.postDelayed(myRunnable2, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,29 +315,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
 
         loadBannerAd();
-        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd NativeAd) {
-                        // Show the ad.
-
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setNativeAd(NativeAd);
-                    }
-                })
-                .withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError adError) {
-                        // Handle the failure by logging, altering the UI, and so on.
-                    }
-                })
-                .withNativeAdOptions(new NativeAdOptions.Builder()
-                        // Methods in the NativeAdOptions.Builder class can be
-                        // used here to specify individual options settings.
-                        .build())
-                .build();
-//        adLoader.loadAd(new AdRequest.Builder().build());
-        adLoader.loadAds(new AdRequest.Builder().build(), 5);
+        loadNativeAd();
         mIcon = findViewById(R.id.ivProfile);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -314,6 +330,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
             public void onClick(View view) {
 //                LoadRewardedAd();
                 onBackPressed();
+
             }
         });
         Intent intent=getIntent();
@@ -373,6 +390,15 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
             }
             Date.setText(Response.getDate());
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        handler.removeCallbacks(myRunnable);
+        handler.removeCallbacks(myRunnable2);
+
+        finish();
     }
 
     @Override

@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     private InterstitialAd interstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     public Boolean load_ad=true;
+    private Handler handler = new Handler();
+    private Runnable myRunnable;
     public void loadAd(int position) {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                                 new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
+                                        handler.removeCallbacks(myRunnable);
                                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                                         MainActivity.this.interstitialAd = null;
 
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        handler.removeCallbacks(myRunnable);
                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                         Log.i(TAG, loadAdError.getMessage());
                         interstitialAd = null;
@@ -162,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
+                                handler.removeCallbacks(myRunnable);
                                 startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                             }
 
@@ -185,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
                         rewardedInterstitialAd = null;
+                        handler.removeCallbacks(myRunnable);
                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                     }
                 });
@@ -194,12 +200,20 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        new Handler().postDelayed(new Runnable() {
-            @Override
+        myRunnable = new Runnable() {
             public void run() {
                 loadBannerAd();
+//                Toast.makeText(MainActivity.this, "main loadBannerAd()", Toast.LENGTH_SHORT).show();
+
             }
-        }, 10000);
+        };
+        handler.postDelayed(myRunnable, 10000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                loadBannerAd();
+//            }
+//        }, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -287,11 +301,12 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     load_ad=false;
 
 //                    Toast.makeText(MainActivity.this,position+"",Toast.LENGTH_SHORT).show();
-                    if(position%5==0){
+                    if(position%2==0){
                         loadRewardedInterstitialAd(position);
 //                        loadAd(position);
                     }
                     else{
+                        handler.removeCallbacks(myRunnable);
                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                     }
                     String message = ResponseList.get(position).getCcy();
@@ -319,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     // Get response errorBody
                     String errorBody = response.errorBody().toString();
                     Log.e("errorBody",errorBody);
-                    Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_LONG).show();
 
                 }
                 else {
@@ -518,6 +533,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     }
     @Override
     public void onBackPressed() {
+        handler.removeCallbacks(myRunnable);
         super.finish();
     }
 }
