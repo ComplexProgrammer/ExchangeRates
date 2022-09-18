@@ -75,9 +75,9 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
     private InterstitialAd interstitialAd;
     private RewardedAd mRewardedAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
+    private AdView mAdView;
     private Handler handler = new Handler();
     private Runnable myRunnable;
-    private Runnable myRunnable2;
     public void loadAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -199,50 +199,23 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                     }
                 });
     }
-    public void loadBannerAd(){
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+    public void loadBannerAd(AdRequest adRequest){
         mAdView.loadAd(adRequest);
-//        Handler handler =  new Handler();
         myRunnable = new Runnable() {
             public void run() {
-                loadBannerAd();
-//                Toast.makeText(ViewByItem.this, "loadBannerAd()", Toast.LENGTH_SHORT).show();
+                loadBannerAd(adRequest);
             }
         };
         handler.postDelayed(myRunnable, 10000);
     }
-    public void loadNativeAd(){
-        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(NativeAd NativeAd) {
-                        // Show the ad.
-
-                        TemplateView template = findViewById(R.id.my_template);
-                        template.setNativeAd(NativeAd);
-                    }
-                })
-                .withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError adError) {
-                        // Handle the failure by logging, altering the UI, and so on.
-                    }
-                })
-                .withNativeAdOptions(new NativeAdOptions.Builder()
-                        // Methods in the NativeAdOptions.Builder class can be
-                        // used here to specify individual options settings.
-                        .build())
-                .build();
-//        adLoader.loadAd(new AdRequest.Builder().build());
+    public void loadNativeAd(AdLoader adLoader){
         adLoader.loadAds(new AdRequest.Builder().build(), 5);
-        myRunnable2 = new Runnable() {
+        myRunnable = new Runnable() {
             public void run() {
-                loadNativeAd();
-//                Toast.makeText(ViewByItem.this, "loadNativeAd()", Toast.LENGTH_SHORT).show();
+                loadNativeAd(adLoader);
             }
         };
-        handler.postDelayed(myRunnable2, 10000);
+        handler.postDelayed(myRunnable, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -313,9 +286,31 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
 //
 //        //Request Ad
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        loadBannerAd(adRequest);
+        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-7773722896374259/3121724539")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(NativeAd NativeAd) {
+                        // Show the ad.
 
-        loadBannerAd();
-        loadNativeAd();
+                        TemplateView template = findViewById(R.id.my_template);
+                        template.setNativeAd(NativeAd);
+                    }
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError adError) {
+                        // Handle the failure by logging, altering the UI, and so on.
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build();
+        loadNativeAd(adLoader);
         mIcon = findViewById(R.id.ivProfile);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
         RoundedBitmapDrawable mDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
@@ -396,8 +391,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
     public void onBackPressed() {
         super.onBackPressed();
         handler.removeCallbacks(myRunnable);
-        handler.removeCallbacks(myRunnable2);
-
         finish();
     }
 

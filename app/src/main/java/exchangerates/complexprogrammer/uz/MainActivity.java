@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     private InterstitialAd interstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     public Boolean load_ad=true;
+    private AdView mAdView;
     private Handler handler = new Handler();
     private Runnable myRunnable;
     public void loadAd(int position) {
@@ -196,24 +197,15 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 });
     }
 
-    public void loadBannerAd(){
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+    public void loadBannerAd(AdRequest adRequest){
         mAdView.loadAd(adRequest);
         myRunnable = new Runnable() {
             public void run() {
-                loadBannerAd();
-//                Toast.makeText(MainActivity.this, "main loadBannerAd()", Toast.LENGTH_SHORT).show();
+                loadBannerAd(adRequest);
 
             }
         };
         handler.postDelayed(myRunnable, 10000);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                loadBannerAd();
-//            }
-//        }, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,8 +270,9 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 
         //Request Ad
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
-
-        loadBannerAd();
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        loadBannerAd(adRequest);
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         String currentDateandTime = sdf.format(new Date());
         ColorDrawable colorDrawable
