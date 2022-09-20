@@ -487,6 +487,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setIcon(R.mipmap.ic_launcher)
                         .setTitle(R.string.app_name)
+                        .setCancelable(false)
                         .setView(aboutView)
                         .setPositiveButton("OK", null);
                 AlertDialog alert = builder.create();
