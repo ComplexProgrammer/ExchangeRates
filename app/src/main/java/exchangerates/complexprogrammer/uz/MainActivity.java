@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -28,13 +29,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adcolony.sdk.AdColony;
-import com.adcolony.sdk.AdColonyAdOptions;
-import com.adcolony.sdk.AdColonyAdSize;
-import com.adcolony.sdk.AdColonyAdView;
-import com.adcolony.sdk.AdColonyAdViewListener;
-import com.adcolony.sdk.AdColonyAppOptions;
-import com.adcolony.sdk.AdColonyZone;
+//import com.adcolony.sdk.AdColony;
+//import com.adcolony.sdk.AdColonyAdOptions;
+//import com.adcolony.sdk.AdColonyAdSize;
+//import com.adcolony.sdk.AdColonyAdView;
+//import com.adcolony.sdk.AdColonyAdViewListener;
+//import com.adcolony.sdk.AdColonyAppOptions;
+//import com.adcolony.sdk.AdColonyZone;
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -78,18 +79,20 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     GridView gridView;
     private final String APP_ID = "app47ccb4f1349341b5a2";
     private final String ZONE_ID = "vz4b1cba6afa79468984";
-    private AdColonyAdViewListener listener;
-    private AdColonyAdOptions adOptions;
-    private RelativeLayout adContainer;
-    private AdColonyAdView _adView;
+//    private AdColonyAdViewListener listener;
+//    private AdColonyAdOptions adOptions;
+//    private RelativeLayout adContainer;
+//    private AdColonyAdView _adView;
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     public Boolean load_ad=true;
     private AdView mAdView;
-    private Handler handler = new Handler();
-    private Runnable myRunnable;
+    private Handler handler;
+    private Runnable runnableBannerAd;
+    private ProgressDialog dialog;
+    private boolean is_pause;
     public void loadAd(int position) {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                                 new FullScreenContentCallback() {
                                     @Override
                                     public void onAdDismissedFullScreenContent() {
-                                        handler.removeCallbacks(myRunnable);
+                                        onBackPressed();
                                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                                         MainActivity.this.interstitialAd = null;
 
@@ -133,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        handler.removeCallbacks(myRunnable);
+                        onBackPressed();
                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                         Log.i(TAG, loadAdError.getMessage());
                         interstitialAd = null;
@@ -167,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
-                                handler.removeCallbacks(myRunnable);
+                                onBackPressed();
                                 startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                             }
 
@@ -191,35 +194,43 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
                         rewardedInterstitialAd = null;
-                        handler.removeCallbacks(myRunnable);
+                        onBackPressed();
                         startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
                     }
                 });
     }
-
     public void loadBannerAd(AdRequest adRequest){
         mAdView.loadAd(adRequest);
-        myRunnable = new Runnable() {
+        runnableBannerAd = new Runnable() {
             public void run() {
                 loadBannerAd(adRequest);
 
             }
         };
-        handler.postDelayed(myRunnable, 10000);
+        handler.postDelayed(runnableBannerAd, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        is_pause=false;
         ChangeLanguage.setLocal(this,ChangeLanguage.getLangCode(this));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handler = new Handler();
 
+        boolean status = NetworkUtil.getConnectivityStatusString(this);
+        if(!status){
+            startActivity(new Intent(this, NoInternetActivity.class));
+        }
+        else {
+            dialog = ProgressDialog.show(MainActivity.this, "", "Loading. Please wait...", true);
+            dialog.dismiss();
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            MobileAds.initialize(this, new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
 
-            }
-        });
+                }
+            });
 //        adContainer = findViewById(R.id.ad_container);
 //        AdColonyAppOptions appOptions = new AdColonyAppOptions();
 //
@@ -268,40 +279,33 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 //        };
 //        adOptions = new AdColonyAdOptions();
 
-        //Request Ad
+            //Request Ad
 //        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        loadBannerAd(adRequest);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        String currentDateandTime = sdf.format(new Date());
-        ColorDrawable colorDrawable
+            mAdView = findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            loadBannerAd(adRequest);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            String currentDateandTime = sdf.format(new Date());
+            ColorDrawable colorDrawable
 //                = new ColorDrawable(Color.parseColor("#90ee90"));
-                = new ColorDrawable(getResources().getColor(R.color.SteelBlue));
-        getSupportActionBar().setTitle(getString(R.string.app_name));
-        getSupportActionBar().setBackgroundDrawable(colorDrawable);
-
-        boolean status = NetworkUtil.getConnectivityStatusString(this);
-        if(!status){
-            startActivity(new Intent(this, NoInternetActivity.class));
-        }
-        else {
+                    = new ColorDrawable(getResources().getColor(R.color.SteelBlue));
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
             gridView=findViewById(R.id.gridView);
             LoadData();
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
-
-//                    Toast.makeText(MainActivity.this,position+"",Toast.LENGTH_SHORT).show();
-                    if(position%2==0){
-                        loadRewardedInterstitialAd(position);
-//                        loadAd(position);
-                    }
-                    else{
-                        handler.removeCallbacks(myRunnable);
-                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                    }
+                    dialog.show();
+                    loadRewardedInterstitialAd(position);
+//                    if(position%2==0){
+//                        loadRewardedInterstitialAd(position);
+//                    }
+//                    else{
+//                        onBackPressed();
+//                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+//                    }
                     String message = ResponseList.get(position).getCcy();
 //                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
@@ -309,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         }
     }
     public void LoadData(){
+        dialog.show();
         Call<ResponseData> _response = ApiClient.getInterface().GetExchangeRates();
         _response.enqueue(new Callback<ResponseData>() {
             @Override
@@ -316,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 Log.e("onResponse","onResponse");
 
                 if(response.isSuccessful()){
+                    dialog.dismiss();
                     ResponseList =response.body().data;
                     Log.e("isSuccessful","isSuccessful");
 
@@ -324,19 +330,21 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
 
                 }
                 else if (response.errorBody() != null) {
-                    // Get response errorBody
+                    dialog.dismiss();
                     String errorBody = response.errorBody().toString();
                     Log.e("errorBody",errorBody);
                     Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_LONG).show();
 
                 }
                 else {
+                    dialog.dismiss();
                     String message="Xatolik yuz berdi. keyinroq yana urinib ko'rig";
                     Toast.makeText(getBaseContext(),message,Toast.LENGTH_LONG).show();
                 }
             }
             @Override
             public void onFailure(Call<ResponseData> call, Throwable t) {
+                onBackPressed();
                 startActivity(new Intent(MainActivity.this, ServerErrorActivity.class));
 
             }
@@ -420,16 +428,31 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
             Nominal.setText(ResponseList.get(position).getNominal());
             Float diff=Float.parseFloat(ResponseList.get(position).getDiff());
             if(diff>0){
+                Code.setTextColor(getResources().getColor(R.color.Green));
+                Ccy.setTextColor(getResources().getColor(R.color.Green));
+                CcyNm.setTextColor(getResources().getColor(R.color.Green));
+                Rate.setTextColor(getResources().getColor(R.color.Green));
+                Nominal.setTextColor(getResources().getColor(R.color.Green));
                 Diff.setText("+"+ diff);
                 Diff.setTextColor(getResources().getColor(R.color.Green));
                 imageDiff.setImageResource(R.drawable.ic_baseline_trending_up_24);
             }
             if(diff==0){
+                Code.setTextColor(getResources().getColor(R.color.Gray));
+                Ccy.setTextColor(getResources().getColor(R.color.Gray));
+                CcyNm.setTextColor(getResources().getColor(R.color.Gray));
+                Rate.setTextColor(getResources().getColor(R.color.Gray));
+                Nominal.setTextColor(getResources().getColor(R.color.Gray));
                 Diff.setText(diff.toString());
                 Diff.setTextColor(getResources().getColor(R.color.Gray));
                 imageDiff.setImageResource(R.drawable.minus);
             }
             if(diff<0){
+                Code.setTextColor(getResources().getColor(R.color.Red));
+                Ccy.setTextColor(getResources().getColor(R.color.Red));
+                CcyNm.setTextColor(getResources().getColor(R.color.Red));
+                Rate.setTextColor(getResources().getColor(R.color.Red));
+                Nominal.setTextColor(getResources().getColor(R.color.Red));
                 Diff.setText(diff.toString());
                 Diff.setTextColor(getResources().getColor(R.color.Red));
                 imageDiff.setImageResource(R.drawable.ic_baseline_trending_down_24);
@@ -464,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         switch (item.getItemId()) {
             case R.id.telegram:
                 try {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/uzb_valyuta_kurslari_bot"));
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/uzbvalyutakurslari"));
                     startActivity(myIntent);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "No application can handle this request."
@@ -527,7 +550,23 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     }
     @Override
     public void onBackPressed() {
-        handler.removeCallbacks(myRunnable);
-        super.finish();
+        super.onBackPressed();
+        dialog.dismiss();
+        handler.removeCallbacks(runnableBannerAd);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(is_pause){
+            handler.postDelayed(runnableBannerAd, 0);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        is_pause=true;
+        dialog.dismiss();
+        handler.removeCallbacks(runnableBannerAd);
     }
 }

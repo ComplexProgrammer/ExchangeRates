@@ -23,13 +23,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.adcolony.sdk.AdColony;
-import com.adcolony.sdk.AdColonyAdOptions;
-import com.adcolony.sdk.AdColonyAdSize;
-import com.adcolony.sdk.AdColonyAdView;
-import com.adcolony.sdk.AdColonyAdViewListener;
-import com.adcolony.sdk.AdColonyAppOptions;
-import com.adcolony.sdk.AdColonyZone;
+//import com.adcolony.sdk.AdColony;
+//import com.adcolony.sdk.AdColonyAdOptions;
+//import com.adcolony.sdk.AdColonyAdSize;
+//import com.adcolony.sdk.AdColonyAdView;
+//import com.adcolony.sdk.AdColonyAdViewListener;
+//import com.adcolony.sdk.AdColonyAppOptions;
+//import com.adcolony.sdk.AdColonyZone;
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -67,17 +67,18 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
     RelativeLayout relativeLayout;
     private final String APP_ID = "app47ccb4f1349341b5a2";
     private final String ZONE_ID = "vz4b1cba6afa79468984";
-    private AdColonyAdViewListener listener;
-    private AdColonyAdOptions adOptions;
-    private RelativeLayout adContainer;
+//    private AdColonyAdViewListener listener;
+//    private AdColonyAdOptions adOptions;
+//    private RelativeLayout adContainer;
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
     private static final String TAG = "MainActivity";
     private InterstitialAd interstitialAd;
     private RewardedAd mRewardedAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private AdView mAdView;
-    private Handler handler = new Handler();
-    private Runnable myRunnable;
+    private Handler handler;
+    private Runnable runnableBannerAd,runnableNativeAd;
+    private boolean is_pause;
     public void loadAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
         InterstitialAd.load(
@@ -138,7 +139,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        onBackPressed();
                         Log.d(TAG, loadAdError.toString());
                         mRewardedAd = null;
                     }
@@ -163,7 +163,6 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     super.onAdDismissedFullScreenContent();
-                                    onBackPressed();
 //                                    loadAd();
                                 }
                             });
@@ -187,7 +186,7 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
-                                onBackPressed();
+
                             }
                         });
                     }
@@ -195,30 +194,32 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
                         rewardedInterstitialAd = null;
-                        onBackPressed();
+
                     }
                 });
     }
     public void loadBannerAd(AdRequest adRequest){
         mAdView.loadAd(adRequest);
-        myRunnable = new Runnable() {
+        runnableBannerAd = new Runnable() {
             public void run() {
                 loadBannerAd(adRequest);
             }
         };
-        handler.postDelayed(myRunnable, 10000);
+        handler.postDelayed(runnableBannerAd, 10000);
     }
     public void loadNativeAd(AdLoader adLoader){
         adLoader.loadAds(new AdRequest.Builder().build(), 5);
-        myRunnable = new Runnable() {
+        runnableNativeAd = new Runnable() {
             public void run() {
                 loadNativeAd(adLoader);
             }
         };
-        handler.postDelayed(myRunnable, 10000);
+        handler.postDelayed(runnableNativeAd, 10000);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        is_pause=false;
+        handler = new Handler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
         super.onCreate(savedInstanceState);
@@ -390,8 +391,25 @@ public class ViewByItem extends AppCompatActivity implements OnUserEarnedRewardL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        handler.removeCallbacks(myRunnable);
-        finish();
+        handler.removeCallbacks(runnableBannerAd);
+        handler.removeCallbacks(runnableNativeAd);
+        startActivity(new Intent(ViewByItem.this, MainActivity.class));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(is_pause){
+            handler.postDelayed(runnableBannerAd, 0);
+            handler.postDelayed(runnableNativeAd, 0);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        is_pause=true;
+        handler.removeCallbacks(runnableBannerAd);
+        handler.removeCallbacks(runnableNativeAd);
     }
 
     @Override
