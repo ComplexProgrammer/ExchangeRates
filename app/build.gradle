@@ -11,8 +11,8 @@ android {
         applicationId "exchangerates.complexprogrammer.uz"
         minSdk 21
         targetSdk 33
-        versionCode 12
-        versionName "2.2.5"
+        versionCode 13
+        versionName "2.2.6"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

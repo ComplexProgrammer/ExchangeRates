@@ -186,6 +186,7 @@
         <com.google.android.gms.ads.AdView
             xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/my_template"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

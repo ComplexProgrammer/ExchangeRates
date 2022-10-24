@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
                     dialog.show();
-                    loadRewardedInterstitialAd(position);
+                    loadAd(position);
 //                    if(position%2==0){
 //                        loadRewardedInterstitialAd(position);
 //                    }
