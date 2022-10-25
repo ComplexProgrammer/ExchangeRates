@@ -234,25 +234,26 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         });
     }
     void show_dialog(int position){
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialog);
-        dialog.show();
-        TextView close_button = dialog.findViewById(R.id.close_button);
-        TextView click_button = dialog.findViewById(R.id.click_button);
-        animation(close_button);
+        final Dialog dialog2 = new Dialog(this);
+        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog2.setCancelable(false);
+        dialog2.setContentView(R.layout.dialog);
+        dialog2.show();
+        TextView close_button = dialog2.findViewById(R.id.close_button);
+        TextView click_button = dialog2.findViewById(R.id.click_button);
         animation(click_button);
         close_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                dialog2.dismiss();
             }
         });
         click_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadAd(position);
+                dialog.show();
+                loadRewardedInterstitialAd(position);
             }
         });
 
@@ -346,7 +347,6 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
-                    dialog.show();
                     show_dialog(position);
 //                    if(position%2==0){
 //                        loadRewardedInterstitialAd(position);

@@ -33,7 +33,7 @@ public class Utils {
             @Override
             public void onFailure(Call call, IOException e) {
                 // we are adding a default image if we gets any error.
-                target.setImageResource(R.drawable.icon_72x72);
+//                target.setImageResource(R.drawable.icon_72x72);
             }
 
             @Override
