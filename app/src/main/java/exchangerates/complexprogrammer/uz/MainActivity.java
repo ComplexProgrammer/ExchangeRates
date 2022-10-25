@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -21,6 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -209,6 +213,51 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         };
         handler.postDelayed(runnableBannerAd, 10000);
     }
+    void animation(View view) {
+        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
+        double animationDuration = 0.2 * 10000;
+        myAnim.setDuration((long) animationDuration);
+        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.1, 20);
+        myAnim.setInterpolator(interpolator);
+        view.startAnimation(myAnim);
+        myAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                animation(view);
+            }
+        });
+    }
+    void show_dialog(int position){
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog);
+        dialog.show();
+        TextView close_button = dialog.findViewById(R.id.close_button);
+        TextView click_button = dialog.findViewById(R.id.click_button);
+        animation(close_button);
+        animation(click_button);
+        close_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        click_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadAd(position);
+            }
+        });
+
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         is_pause=false;
@@ -298,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     load_ad=false;
                     dialog.show();
-                    loadAd(position);
+                    show_dialog(position);
 //                    if(position%2==0){
 //                        loadRewardedInterstitialAd(position);
 //                    }
