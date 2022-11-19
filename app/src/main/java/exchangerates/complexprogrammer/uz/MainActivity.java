@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
     public Boolean load_ad=true;
     private AdView mAdView;
     private Handler handler;
-    private Runnable runnableBannerAd;
+    private Runnable runnableBannerAd, runnable;
     private ProgressDialog dialog;
     private boolean is_pause;
     public void loadAd(int position) {
@@ -240,7 +240,15 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         dialog2.setCancelable(false);
         dialog2.setContentView(R.layout.dialog);
         dialog2.show();
+        ImageView close_background = dialog2.findViewById(R.id.close_background);
         TextView close_button = dialog2.findViewById(R.id.close_button);
+        runnable = new Runnable() {
+            public void run() {
+                close_background.setVisibility(View.VISIBLE);
+                close_button.setVisibility(View.VISIBLE);
+            }
+        };
+        handler.postDelayed(runnable, 4000);
         TextView click_button = dialog2.findViewById(R.id.click_button);
         animation(click_button);
         close_button.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
             @Override
             public void onClick(View view) {
                 dialog.show();
-                loadRewardedInterstitialAd(position);
+                loadAd(position);
             }
         });
 
@@ -536,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
         switch (item.getItemId()) {
             case R.id.telegram:
                 try {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/uzbvalyutakurslari"));
+                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/ComplexProgrammer"));
                     startActivity(myIntent);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(this, "No application can handle this request."
