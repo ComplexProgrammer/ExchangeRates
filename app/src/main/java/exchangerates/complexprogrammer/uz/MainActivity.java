@@ -174,8 +174,10 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 super.onAdDismissedFullScreenContent();
-                                onBackPressed();
-                                startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                                if(position>0){
+                                    onBackPressed();
+                                    startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                                }
                             }
 
                             @Override
@@ -198,8 +200,10 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
                     public void onAdFailedToLoad(LoadAdError loadAdError) {
                         Log.d(TAG, loadAdError.toString());
                         rewardedInterstitialAd = null;
-                        onBackPressed();
-                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                        if(position>0){
+                            onBackPressed();
+                            startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
+                        }
                     }
                 });
     }
@@ -342,6 +346,12 @@ public class MainActivity extends AppCompatActivity implements OnUserEarnedRewar
             mAdView = findViewById(R.id.adView);
             AdRequest adRequest = new AdRequest.Builder().build();
             loadBannerAd(adRequest);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadRewardedInterstitialAd(0);
+                }
+            }, 5000);
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
             String currentDateandTime = sdf.format(new Date());
             ColorDrawable colorDrawable
