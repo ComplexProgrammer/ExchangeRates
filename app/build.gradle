@@ -11,8 +11,8 @@ android {
         applicationId "exchangerates.complexprogrammer.uz"
         minSdk 21
         targetSdk 34
-        versionCode 18
-        versionName "2.3.1"
+        versionCode 20
+        versionName "2.3.3"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,7 @@ apply plugin: 'com.google.gms.google-services'
 dependencies {
 
 //    implementation 'com.applovin:applovin-sdk:'
-//    implementation 'com.google.ads.mediation:applovin:11.4.4.0'
+    implementation 'com.google.ads.mediation:applovin:11.4.4.0'
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
