@@ -9,17 +9,27 @@ android {
 
     defaultConfig {
         applicationId "exchangerates.complexprogrammer.uz"
-        minSdk 21
+        minSdk 24
         targetSdk 34
-        versionCode 21
-        versionName "3.0.0"
+        versionCode 23
+        versionName "3.0.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file('ExchangeRates.jks')
+            storePassword 'C0mplex'
+            keyAlias 'key0'
+            keyPassword 'C0mplex'
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -29,6 +39,10 @@ android {
     }
     buildFeatures {
         buildConfig true
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
     namespace 'exchangerates.complexprogrammer.uz'
 }
