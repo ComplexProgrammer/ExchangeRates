@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#8EC0EE</color>
+    <color name="brand_dark">#5A93C6</color>
+    <color name="brand_container">#1E3A55</color>
+    <color name="on_brand_container">#D6E6F5</color>
+    <color name="accent">#4DB6AC</color>
+
+    <color name="background">#111418</color>
+    <color name="surface">#1B2026</color>
+    <color name="text_primary">#E7EAEE</color>
+    <color name="text_secondary">#A3ABB5</color>
+    <color name="divider">#2C333B</color>
+
+    <color name="rate_up">#5CC97E</color>
+    <color name="rate_down">#FF7A73</color>
+    <color name="rate_flat">#9AA3AE</color>
+    <color name="favorite">#FFC940</color>
+
+    <color name="offline_banner">#3D3216</color>
+    <color name="on_offline_banner">#FFE3A0</color>
+
+    <color name="widget_background">#F21B2026</color>
+    <color name="widget_text">#E7EAEE</color>
+    <color name="widget_text_secondary">#A3ABB5</color>
+</resources>

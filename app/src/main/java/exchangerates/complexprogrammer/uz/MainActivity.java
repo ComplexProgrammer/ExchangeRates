@@ -1,639 +1,213 @@
 package exchangerates.complexprogrammer.uz;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-//import com.adcolony.sdk.AdColony;
-//import com.adcolony.sdk.AdColonyAdOptions;
-//import com.adcolony.sdk.AdColonyAdSize;
-//import com.adcolony.sdk.AdColonyAdView;
-//import com.adcolony.sdk.AdColonyAdViewListener;
-//import com.adcolony.sdk.AdColonyAppOptions;
-//import com.adcolony.sdk.AdColonyZone;
-import com.google.android.ads.nativetemplates.TemplateView;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdOptions;
-import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.text.SimpleDateFormat;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
+import exchangerates.complexprogrammer.uz.ads.AdManager;
 import exchangerates.complexprogrammer.uz.models.Response;
-import exchangerates.complexprogrammer.uz.models.ResponseData;
+import exchangerates.complexprogrammer.uz.services.AppPrefs;
+import exchangerates.complexprogrammer.uz.services.LocaleHelper;
 import exchangerates.complexprogrammer.uz.services.NetworkUtil;
-import exchangerates.complexprogrammer.uz.services.ApiClient;
-import exchangerates.complexprogrammer.uz.services.ChangeLanguage;
-import exchangerates.complexprogrammer.uz.services.Utils;
-import retrofit2.Call;
-import retrofit2.Callback;
+import exchangerates.complexprogrammer.uz.services.RatesRepository;
+import exchangerates.complexprogrammer.uz.ui.RatesAdapter;
+import exchangerates.complexprogrammer.uz.widget.RatesWidgetProvider;
+import exchangerates.complexprogrammer.uz.work.RatesWorker;
 
-public class MainActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
+public class MainActivity extends AppCompatActivity implements RatesAdapter.Listener {
+    private static final long MAX_SPLASH_MS = 2000;
 
-    private List<Response> ResponseList =new ArrayList<>();
-    GridView gridView;
-    private final String APP_ID = "app47ccb4f1349341b5a2";
-    private final String ZONE_ID = "vz4b1cba6afa79468984";
-//    private AdColonyAdViewListener listener;
-//    private AdColonyAdOptions adOptions;
-//    private RelativeLayout adContainer;
-//    private AdColonyAdView _adView;
-    private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/4469855441";
-    private static final String TAG = "MainActivity";
-    private InterstitialAd interstitialAd;
-    private RewardedInterstitialAd rewardedInterstitialAd;
-    public Boolean load_ad=true;
-    private AdView mAdView;
-    private Handler handler;
-    private Runnable runnableBannerAd, runnable;
-    private ProgressDialog dialog;
-    private boolean is_pause;
-    public void loadAd(int position) {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        InterstitialAd.load(
-                this,
-                AD_UNIT_ID,
-                adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        interstitialAd.show(MainActivity.this);
-                        //MainActivity.this.interstitialAd = interstitialAd;
-                        interstitialAd.setFullScreenContentCallback(
-                                new FullScreenContentCallback() {
-                                    @Override
-                                    public void onAdDismissedFullScreenContent() {
-                                        onBackPressed();
-                                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                                        MainActivity.this.interstitialAd = null;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private RatesAdapter adapter;
+    private SwipeRefreshLayout swipeRefresh;
+    private RecyclerView list;
+    private TextView header, offlineBanner, empty;
+    private View errorState;
+    private CircularProgressIndicator progress;
+    private FrameLayout adContainer;
 
-                                        Log.d("TAG", "The ad was dismissed.");
-                                    }
+    private List<Response> rates = new ArrayList<>();
+    private String query = "";
+    private boolean keepSplash = true;
+    private boolean loading;
 
-                                    @Override
-                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                        // Called when fullscreen content failed to show.
-                                        // Make sure to set your reference to null so you don't
-                                        // show it a second time.
-                                        MainActivity.this.interstitialAd = null;
-                                        Log.d("TAG", "The ad failed to show.");
-                                    }
-
-                                    @Override
-                                    public void onAdShowedFullScreenContent() {
-                                        // Called when fullscreen content is shown.
-                                        Log.d("TAG", "The ad was shown.");
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        onBackPressed();
-                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                        Log.i(TAG, loadAdError.getMessage());
-                        interstitialAd = null;
-
-                        String error =
-                                String.format(
-                                        "domain: %s, code: %d, message: %s",
-                                        loadAdError.getDomain(), loadAdError.getCode(), loadAdError.getMessage());
-//                        Toast.makeText(
-//                                MainActivity.this, "onAdFailedToLoad() with error: " + error, Toast.LENGTH_SHORT)
-//                                .show();
-                    }
-                });
-
-    }
-    public void loadRewardedInterstitialAd(int position){
-        RewardedInterstitialAd.load(MainActivity.this, "ca-app-pub-7773722896374259/4867703081",
-                new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(RewardedInterstitialAd ad) {
-                        Log.d(TAG, "Ad was loaded.");
-                        rewardedInterstitialAd = ad;
-                        rewardedInterstitialAd.show(/* Activity */ MainActivity.this,/*
-    OnUserEarnedRewardListener */ MainActivity.this);
-                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdClicked() {
-                                super.onAdClicked();
-                            }
-
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                super.onAdDismissedFullScreenContent();
-                                if(position>0){
-                                    onBackPressed();
-                                    startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                                }
-                            }
-
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                super.onAdFailedToShowFullScreenContent(adError);
-                            }
-
-                            @Override
-                            public void onAdImpression() {
-                                super.onAdImpression();
-                            }
-
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                super.onAdShowedFullScreenContent();
-                            }
-                        });
-                    }
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError loadAdError) {
-                        Log.d(TAG, loadAdError.toString());
-                        rewardedInterstitialAd = null;
-                        if(position>0){
-                            onBackPressed();
-                            startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-                        }
-                    }
-                });
-    }
-    public void loadBannerAd(AdRequest adRequest){
-        mAdView.loadAd(adRequest);
-        runnableBannerAd = new Runnable() {
-            public void run() {
-                loadBannerAd(adRequest);
-
-            }
-        };
-        handler.postDelayed(runnableBannerAd, 10000);
-    }
-    void animation(View view) {
-        final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.bounce);
-        double animationDuration = 0.2 * 10000;
-        myAnim.setDuration((long) animationDuration);
-        MyBounceInterpolator interpolator = new MyBounceInterpolator(0.1, 20);
-        myAnim.setInterpolator(interpolator);
-        view.startAnimation(myAnim);
-        myAnim.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation arg0) {
-            }
-            @Override
-            public void onAnimationRepeat(Animation arg0) {
-            }
-            @Override
-            public void onAnimationEnd(Animation arg0) {
-                animation(view);
-            }
-        });
-    }
-    void show_dialog(int position){
-        final Dialog dialog2 = new Dialog(this);
-        dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog2.setCancelable(false);
-        dialog2.setContentView(R.layout.dialog);
-        dialog2.show();
-        ImageView close_background = dialog2.findViewById(R.id.close_background);
-        TextView close_button = dialog2.findViewById(R.id.close_button);
-        runnable = new Runnable() {
-            public void run() {
-                close_background.setVisibility(View.VISIBLE);
-                close_button.setVisibility(View.VISIBLE);
-            }
-        };
-        handler.postDelayed(runnable, 4000);
-        TextView click_button = dialog2.findViewById(R.id.click_button);
-        animation(click_button);
-        close_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog2.dismiss();
-            }
-        });
-        click_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-                loadAd(position);
-            }
-        });
-
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        is_pause=false;
-        ChangeLanguage.setLocal(this,ChangeLanguage.getLangCode(this));
+        SplashScreen splash = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+
+        String migrated = AppPrefs.migrateLegacyLanguage(this);
+        if (migrated != null) {
+            // Recreates the activity in the language picked in the old version.
+            LocaleHelper.setLanguage(this, migrated);
+        }
+
         setContentView(R.layout.activity_main);
-        handler = new Handler();
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        boolean status = NetworkUtil.getConnectivityStatusString(this);
-        if(!status){
-            startActivity(new Intent(this, NoInternetActivity.class));
+        header = findViewById(R.id.header);
+        offlineBanner = findViewById(R.id.offline_banner);
+        empty = findViewById(R.id.empty);
+        errorState = findViewById(R.id.error_state);
+        progress = findViewById(R.id.progress);
+        adContainer = findViewById(R.id.ad_container);
+        swipeRefresh = findViewById(R.id.swipe_refresh);
+        list = findViewById(R.id.list);
+
+        adapter = new RatesAdapter(this);
+        list.setAdapter(adapter);
+        swipeRefresh.setOnChildScrollUpCallback((parent, child) -> list.canScrollVertically(-1));
+        swipeRefresh.setOnRefreshListener(this::refresh);
+        findViewById(R.id.retry).setOnClickListener(v -> refresh());
+
+        // Show saved rates instantly; the network refresh happens behind them.
+        List<Response> cached = AppPrefs.getCachedRates(this);
+        if (cached != null) {
+            showRates(cached);
+            keepSplash = false;
         }
-        else {
-            dialog = ProgressDialog.show(MainActivity.this, "", "Loading. Please wait...", true);
-            dialog.dismiss();
+        splash.setKeepOnScreenCondition(() -> keepSplash);
+        handler.postDelayed(() -> keepSplash = false, MAX_SPLASH_MS);
 
-            MobileAds.initialize(this, new OnInitializationCompleteListener() {
-                @Override
-                public void onInitializationComplete(InitializationStatus initializationStatus) {
+        refresh();
 
-                }
-            });
-//        adContainer = findViewById(R.id.ad_container);
-//        AdColonyAppOptions appOptions = new AdColonyAppOptions();
-//
-//        // Configure AdColony in your launching Activity's onCreate() method so that cached ads can
-//        // be available as soon as possible.
-//        AdColony.configure(this, appOptions, APP_ID);
-//
-//        listener = new AdColonyAdViewListener() {
-//            @Override
-//            public void onRequestFilled(AdColonyAdView adColonyAdView) {
-//                Log.d(TAG, "onRequestFilled");
-//                adContainer.addView(adColonyAdView);
-//                _adView = adColonyAdView;
-//
-//            }
-//
-//            @Override
-//            public void onRequestNotFilled(AdColonyZone zone) {
-//                super.onRequestNotFilled(zone);
-//                Log.d(TAG, "onRequestNotFilled");
-//            }
-//
-//            @Override
-//            public void onOpened(AdColonyAdView ad) {
-//                super.onOpened(ad);
-//                Log.d(TAG, "onOpened");
-//            }
-//
-//            @Override
-//            public void onClosed(AdColonyAdView ad) {
-//                super.onClosed(ad);
-//                Log.d(TAG, "onClosed");
-//            }
-//
-//            @Override
-//            public void onClicked(AdColonyAdView ad) {
-//                super.onClicked(ad);
-//                Log.d(TAG, "onClicked");
-//            }
-//
-//            @Override
-//            public void onLeftApplication(AdColonyAdView ad) {
-//                super.onLeftApplication(ad);
-//                Log.d(TAG, "onLeftApplication");
-//            }
-//        };
-//        adOptions = new AdColonyAdOptions();
-
-            //Request Ad
-//        AdColony.requestAdView(ZONE_ID, listener, AdColonyAdSize.BANNER, adOptions);
-            mAdView = findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
-            loadBannerAd(adRequest);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    loadRewardedInterstitialAd(0);
-                }
-            }, 5000);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-            String currentDateandTime = sdf.format(new Date());
-            ColorDrawable colorDrawable
-//                = new ColorDrawable(Color.parseColor("#90ee90"));
-                    = new ColorDrawable(getResources().getColor(R.color.SteelBlue));
-            getSupportActionBar().setTitle(getString(R.string.app_name));
-            getSupportActionBar().setBackgroundDrawable(colorDrawable);
-            gridView=findViewById(R.id.gridView);
-            LoadData();
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    load_ad=false;
-                    show_dialog(position);
-//                    if(position%2==0){
-//                        loadRewardedInterstitialAd(position);
-//                    }
-//                    else{
-//                        onBackPressed();
-//                        startActivity(new Intent(MainActivity.this,ViewByItem.class).putExtra("ResponseData", ResponseList.get(position)));
-//                    }
-                    String message = ResponseList.get(position).getCcy();
-//                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    }
-    public void LoadData(){
-        dialog.show();
-        Call<ResponseData> _response = ApiClient.getInterface().GetExchangeRates();
-        _response.enqueue(new Callback<ResponseData>() {
-            @Override
-            public void onResponse(Call<ResponseData> call, retrofit2.Response<ResponseData> response) {
-                Log.e("onResponse","onResponse");
-
-                if(response.isSuccessful()){
-                    dialog.dismiss();
-                    ResponseList =response.body().data;
-                    Log.e("isSuccessful","isSuccessful");
-
-                    CustomAdapter customAdapter=new CustomAdapter(ResponseList,getApplicationContext());
-                    gridView.setAdapter(customAdapter);
-
-                }
-                else if (response.errorBody() != null) {
-                    dialog.dismiss();
-                    String errorBody = response.errorBody().toString();
-                    Log.e("errorBody",errorBody);
-                    Toast.makeText(getBaseContext(),errorBody,Toast.LENGTH_LONG).show();
-
-                }
-                else {
-                    dialog.dismiss();
-                    String message="Xatolik yuz berdi. keyinroq yana urinib ko'rig";
-                    Toast.makeText(getBaseContext(),message,Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<ResponseData> call, Throwable t) {
-                onBackPressed();
-                startActivity(new Intent(MainActivity.this, ServerErrorActivity.class));
-
-            }
+        AdManager.init(this, () -> {
+            AdManager.loadBanner(this, adContainer);
+            AdManager.preloadInterstitial(this);
+            MyApplication.onAdsReady();
         });
     }
 
-    @Override
-    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-
-    }
-
-    public class CustomAdapter extends BaseAdapter {
-        private final List<Response> ResponseList;
-        private final Context context;
-        private final LayoutInflater layoutInflater;
-
-        public CustomAdapter(List<Response> ResponseList, Context context) {
-            this.ResponseList = ResponseList;
-            this.context = context;
-            this.layoutInflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        @Override
-        public int getCount() {
-            return ResponseList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @SuppressLint("SetTextI18n")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView==null){
-                convertView=layoutInflater.inflate(R.layout.row_grid_items,parent,false);
-            }
-            ImageView imageView = convertView.findViewById(R.id.imageview);
-            ImageView imageDiff = convertView.findViewById(R.id.imageDiff);
-            ImageView country_flag = convertView.findViewById(R.id.country_flag);
-            // url for .svg image
-            String url = getString(R.string.file_url) + "/flag_image/UZS.svg";
-
-            // this method will load svg
-            // image in your imageview
-
-            TextView Code=convertView.findViewById(R.id.Code);
-            TextView Ccy=convertView.findViewById(R.id.Ccy);
-            TextView CcyNm=convertView.findViewById(R.id.CcyNm);
-            TextView Nominal=convertView.findViewById(R.id.Nominal);
-            TextView Rate=convertView.findViewById(R.id.Rate);
-            TextView Diff=convertView.findViewById(R.id.Diff);
-            TextView Date=convertView.findViewById(R.id.Date);
-            String country_flag_url = getString(R.string.file_url) + "/flag_image/"+ ResponseList.get(position).getCcy()+".svg";
-            Utils.fetchSvg(context, country_flag_url, country_flag);
-            Utils.fetchSvg(context, url, imageView);
-            Code.setText(ResponseList.get(position).getCode());
-            Ccy.setText(ResponseList.get(position).getCcy());
-            String langCode=ChangeLanguage.getLangCode(getBaseContext());
-            switch (langCode) {
-                case "uz":
-                    CcyNm.setText(ResponseList.get(position).getCcyNm_UZ());
-                    break;
-                case "uzc":
-                    CcyNm.setText(ResponseList.get(position).getCcyNm_UZC());
-                    break;
-                case "en":
-                    CcyNm.setText(ResponseList.get(position).getCcyNm_EN());
-                    break;
-                case "ru":
-                    CcyNm.setText(ResponseList.get(position).getCcyNm_RU());
-                    break;
-            }
-            Rate.setText(ResponseList.get(position).getRate()+" "+getString(R.string.sum));
-            Nominal.setText(ResponseList.get(position).getNominal());
-            Float diff=Float.parseFloat(ResponseList.get(position).getDiff());
-            if(diff>0){
-                Code.setTextColor(getResources().getColor(R.color.Green));
-                Ccy.setTextColor(getResources().getColor(R.color.Green));
-                CcyNm.setTextColor(getResources().getColor(R.color.Green));
-                Rate.setTextColor(getResources().getColor(R.color.Green));
-                Nominal.setTextColor(getResources().getColor(R.color.Green));
-                Diff.setText("+"+ diff);
-                Diff.setTextColor(getResources().getColor(R.color.Green));
-                imageDiff.setImageResource(R.drawable.ic_baseline_trending_up_24);
-            }
-            if(diff==0){
-                Code.setTextColor(getResources().getColor(R.color.Gray));
-                Ccy.setTextColor(getResources().getColor(R.color.Gray));
-                CcyNm.setTextColor(getResources().getColor(R.color.Gray));
-                Rate.setTextColor(getResources().getColor(R.color.Gray));
-                Nominal.setTextColor(getResources().getColor(R.color.Gray));
-                Diff.setText(diff.toString());
-                Diff.setTextColor(getResources().getColor(R.color.Gray));
-                imageDiff.setImageResource(R.drawable.minus);
-            }
-            if(diff<0){
-                Code.setTextColor(getResources().getColor(R.color.Red));
-                Ccy.setTextColor(getResources().getColor(R.color.Red));
-                CcyNm.setTextColor(getResources().getColor(R.color.Red));
-                Rate.setTextColor(getResources().getColor(R.color.Red));
-                Nominal.setTextColor(getResources().getColor(R.color.Red));
-                Diff.setText(diff.toString());
-                Diff.setTextColor(getResources().getColor(R.color.Red));
-                imageDiff.setImageResource(R.drawable.ic_baseline_trending_down_24);
-            }
-
-            Date.setText(ResponseList.get(position).getDate());
-
-            return convertView;
-        }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.language_menu, menu);
-        String language=ChangeLanguage.getLangCode(this);
-
-        MenuItem uzbek = menu.findItem(R.id.uzbek);
-        MenuItem uzbekc = menu.findItem(R.id.uzbekc);
-        MenuItem english = menu.findItem(R.id.english);
-        MenuItem russian = menu.findItem(R.id.russian);
-        switch (language){
-            case "uz": uzbek.setVisible(false); break;
-            case "uzc": uzbekc.setVisible(false); break;
-            case "en": english.setVisible(false); break;
-            case "ru": russian.setVisible(false); break;
-
-        }
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.telegram:
-                try {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/ComplexProgrammer"));
-                    startActivity(myIntent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, "No application can handle this request."
-                            + " Please install a webbrowser",  Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
-                return true;
-            case R.id.about:
-                LayoutInflater factory = LayoutInflater.from(MainActivity.this);
-                final View aboutView = factory.inflate(R.layout.about, null);
-                if(NetworkUtil.getConnectivityStatusString(getBaseContext())){
-                    AdView mAdView = aboutView.findViewById(R.id.adView);
-                    AdRequest adRequest = new AdRequest.Builder()
-                            .build();
-                    mAdView.loadAd(adRequest);
-                }
-                TextView versionLabel = aboutView.findViewById(R.id.version_label);
-                String versionName = getAppVersionName(getApplicationContext());
-                versionLabel.setText(MainActivity.this.getString(R.string.version, versionName));
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setIcon(R.mipmap.ic_launcher)
-                        .setTitle(R.string.app_name)
-                        .setCancelable(false)
-                        .setView(aboutView)
-                        .setPositiveButton("OK", null);
-                AlertDialog alert = builder.create();
-                alert.show();
-                return true;
-            case R.id.uzbek:
-                ChangeLanguage.setLocal(this,"uz");
-                onBackPressed();
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            case R.id.uzbekc:
-                ChangeLanguage.setLocal(this,"uzc");
-                onBackPressed();
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            case R.id.english:
-                ChangeLanguage.setLocal(this,"en");
-                onBackPressed();
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            case R.id.russian:
-                ChangeLanguage.setLocal(this,"ru");
-                onBackPressed();
-                startActivity(new Intent(this, MainActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    public static String getAppVersionName(Context context) {
-        try {
-            return context.getPackageManager().getPackageInfo(
-                    context.getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        dialog.dismiss();
-        handler.removeCallbacks(runnableBannerAd);
-    }
     @Override
     protected void onResume() {
         super.onResume();
-        if(is_pause){
-            handler.postDelayed(runnableBannerAd, 0);
-        }
+        adapter.setFavorites(AppPrefs.getFavorites(this));
+        if (!rates.isEmpty()) render();
+        // Hides the banner once the user earned the ad-free period.
+        if (AdManager.isReady()) AdManager.loadBanner(this, adContainer);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        is_pause=true;
-        dialog.dismiss();
-        handler.removeCallbacks(runnableBannerAd);
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint(getString(R.string.search_hint));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                query = text;
+                render();
+                return true;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh() {
+        if (loading) return;
+        loading = true;
+        if (rates.isEmpty()) {
+            progress.setVisibility(View.VISIBLE);
+            errorState.setVisibility(View.GONE);
+        }
+        RatesRepository.fetch(this, new RatesRepository.RatesCallback() {
+            @Override
+            public void onRates(@NonNull List<Response> fresh) {
+                loading = false;
+                keepSplash = false;
+                swipeRefresh.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+                offlineBanner.setVisibility(View.GONE);
+                showRates(fresh);
+                RatesWorker.onRatesUpdated(getApplicationContext(), fresh);
+            }
+
+            @Override
+            public void onError() {
+                loading = false;
+                keepSplash = false;
+                swipeRefresh.setRefreshing(false);
+                progress.setVisibility(View.GONE);
+                if (rates.isEmpty()) {
+                    errorState.setVisibility(View.VISIBLE);
+                    ((TextView) findViewById(R.id.error_text)).setText(NetworkUtil.isOnline(MainActivity.this)
+                            ? R.string.error_loading : R.string.no_internet_is_available);
+                } else {
+                    offlineBanner.setText(getString(R.string.offline_banner, rates.get(0).getDate()));
+                    offlineBanner.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void showRates(List<Response> data) {
+        rates = data;
+        errorState.setVisibility(View.GONE);
+        header.setText(getString(R.string.rates_for_date, data.get(0).getDate()) + " · " + getString(R.string.rates_source));
+        render();
+    }
+
+    private void render() {
+        List<Response> filtered = new ArrayList<>();
+        for (Response rate : RatesRepository.sortFavoritesFirst(rates, AppPrefs.getFavorites(this))) {
+            if (rate.matches(query)) filtered.add(rate);
+        }
+        adapter.submitList(filtered);
+        empty.setVisibility(filtered.isEmpty() && !rates.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onRateClick(Response rate) {
+        AdManager.openWithOptionalInterstitial(this, () ->
+                startActivity(new Intent(this, DetailActivity.class).putExtra(DetailActivity.EXTRA_RATE, rate)));
+    }
+
+    @Override
+    public void onFavoriteClick(Response rate) {
+        AppPrefs.toggleFavorite(this, rate.getCcy());
+        adapter.setFavorites(AppPrefs.getFavorites(this));
+        render();
+        RatesWidgetProvider.updateAll(getApplicationContext(), rates);
+    }
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }

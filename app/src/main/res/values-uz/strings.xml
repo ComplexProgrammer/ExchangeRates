@@ -1,26 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">O\'zbekistondagi valyuta kurslari</string>
-    <string name="no_internet_is_available">Internet yo\'q</string>>
+    <string name="sum">so\'m</string>
+
+    <!-- Main screen -->
+    <string name="rates_source">O\'zbekiston Markaziy banki</string>
+    <string name="rates_for_date">%s holatiga rasmiy kurs</string>
+    <string name="offline_banner">Yangilab bo\'lmadi. %s dagi saqlangan kurslar ko\'rsatilmoqda</string>
+    <string name="error_loading">Kurslarni yuklab bo\'lmadi. Internetni tekshirib, qayta urinib ko\'ring.</string>
+    <string name="no_internet_is_available">Internet aloqasi yo\'q</string>
+    <string name="retry">Qayta urinish</string>
+    <string name="search_hint">Valyutani qidirish</string>
+    <string name="nothing_found">Hech narsa topilmadi</string>
+    <string name="favorites_add">%s ni sevimlilarga qo\'shish</string>
+    <string name="favorites_remove">%s ni sevimlilardan olib tashlash</string>
+    <string name="row_description">%1$s %2$s %3$s so\'mga teng, o\'zgarish %4$s</string>
+
+    <!-- Detail screen -->
+    <string name="converter_title">Kalkulyator</string>
+    <string name="swap">Valyutalarni almashtirish</string>
+    <string name="chart_title">Kurs tarixi</string>
+    <string name="period_week">7 kun</string>
+    <string name="period_month">30 kun</string>
+    <string name="period_year">1 yil</string>
+    <string name="chart_error">Kurs tarixini yuklab bo\'lmadi</string>
+    <string name="period_change">Davr ichida o\'zgarish: %s</string>
+    <string name="change_since_yesterday">Oldingi kursga nisbatan o\'zgarish</string>
+    <string name="share">Ulashish</string>
+    <string name="share_text">%1$s = %2$s (%3$s)\nO\'zbekiston Markaziy banki, %4$s\nhttps://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz</string>
+
+    <!-- Alerts -->
+    <string name="alert_set">Kurs haqida eslatma</string>
+    <string name="alert_dialog_title">%s kursi qachon xabar berilsin</string>
+    <string name="alert_above">dan oshganda</string>
+    <string name="alert_below">dan tushganda</string>
+    <string name="alert_value_hint">Kurs, so\'m</string>
+    <string name="alert_saved">Eslatma saqlandi. Sizga xabar beramiz.</string>
+    <string name="alert_invalid">To\'g\'ri son kiriting</string>
+    <string name="cancel">Bekor qilish</string>
+    <string name="save">Saqlash</string>
+    <string name="delete">O\'chirish</string>
+    <string name="alert_item_above">%1$s %2$s dan yuqori</string>
+    <string name="alert_item_below">%1$s %2$s dan past</string>
+
+    <!-- Notifications -->
+    <string name="channel_daily">Kunlik kurslar</string>
+    <string name="channel_alerts">Kurs eslatmalari</string>
+    <string name="daily_title">%s uchun yangi kurslar</string>
+    <string name="alert_triggered_above">%1$s %2$s dan oshdi — hozir %3$s</string>
+    <string name="alert_triggered_below">%1$s %2$s dan tushdi — hozir %3$s</string>
+    <string name="notification_permission_denied">Bildirishnomalar tizim sozlamalarida o\'chirilgan</string>
+
+    <!-- Settings -->
+    <string name="settings">Sozlamalar</string>
+    <string name="cat_general">Umumiy</string>
+    <string name="cat_notifications">Bildirishnomalar</string>
+    <string name="cat_ads">Reklama</string>
+    <string name="cat_about">Ilova haqida</string>
+    <string name="language">Til</string>
+    <string name="language_system">Tizim tili</string>
     <string name="uzbek">O\'zbek</string>
     <string name="uzbekc">Ўзбек</string>
     <string name="english">English</string>
     <string name="russian">Русский</string>
-    <string name="splash_title">Complex Programmer</string>
-    <string name="splash_subtitle">complexprogrammer.uz</string>
-    <string name="language">Til</string>
-    <string name="about">Biz haqimizda</string>
-    <string name="telegram">Telegram</string>
-    <string name="current_time">Joriy vaqt</string>
-    <string name="sum">So\'m</string>
+    <string name="theme">Mavzu</string>
+    <string name="theme_system">Tizim bo\'yicha</string>
+    <string name="theme_light">Yorug\'</string>
+    <string name="theme_dark">Tungi</string>
+    <string name="pref_daily">Kunlik kurs bildirishnomasi</string>
+    <string name="pref_daily_summary">Markaziy bank yangi kurslarni e\'lon qilganda xabar berish</string>
+    <string name="pref_alerts">Kurs eslatmalari</string>
+    <string name="pref_alerts_summary">Faol: %d</string>
+    <string name="pref_alerts_empty">Faol eslatmalar yo\'q. Valyutani ochib, qo\'ng\'iroqcha belgisini bosing.</string>
+    <string name="pref_ad_free">24 soat reklamasiz</string>
+    <string name="pref_ad_free_summary">Bitta qisqa video ko\'ring</string>
+    <string name="pref_ad_free_active">Reklama %s gacha o\'chirilgan</string>
+    <string name="ad_not_ready">Video hali tayyor emas. Birozdan so\'ng qayta urinib ko\'ring.</string>
+    <string name="pref_privacy">Reklama maxfiylik sozlamalari</string>
+    <string name="telegram">Telegram kanal</string>
     <string name="version">Versiya %s</string>
-    <string name="send_me_bugs">Agar siz xatoga duch kelsangiz, men bilan elektron pochta orqali bog\'lanishingiz mumkin.</string>
+    <string name="send_me_bugs">Xato topdingizmi yoki taklifingiz bormi? Bizga elektron pochta orqali yozing.</string>
     <string name="site_url">www.complexprogrammer.uz</string>
-    <string name="file_url">http://complexprogrammer.uz/static</string>
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Dasturchi</string>
     <string name="developer">Odiljon Gaybullaev</string>
-    <string name="back">orqaga</string>
-    <string name="server_error">Serverda xatolik yuz berdi. Iltimos keyinroq qayta urinib ko\'ring.</string>
 
+    <!-- Widget -->
+    <string name="widget_description">USD, EUR va RUB kurslari (yoki sevimlilaringiz)</string>
+    <string name="widget_loading">Yuklanmoqda…</string>
 </resources>

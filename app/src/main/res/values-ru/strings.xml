@@ -1,26 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Курсы валют в Узбекистане</string>
-    <string name="no_internet_is_available">Нет интернета</string>>
+    <string name="sum">сум</string>
+
+    <!-- Main screen -->
+    <string name="rates_source">Центральный банк Узбекистана</string>
+    <string name="rates_for_date">Официальный курс на %s</string>
+    <string name="offline_banner">Не удалось обновить. Показаны сохранённые курсы на %s</string>
+    <string name="error_loading">Не удалось загрузить курсы. Проверьте интернет и попробуйте снова.</string>
+    <string name="no_internet_is_available">Нет подключения к интернету</string>
+    <string name="retry">Повторить</string>
+    <string name="search_hint">Поиск валюты</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="favorites_add">Добавить %s в избранное</string>
+    <string name="favorites_remove">Убрать %s из избранного</string>
+    <string name="row_description">%1$s %2$s равно %3$s сум, изменение %4$s</string>
+
+    <!-- Detail screen -->
+    <string name="converter_title">Конвертер</string>
+    <string name="swap">Поменять валюты местами</string>
+    <string name="chart_title">История курса</string>
+    <string name="period_week">7 дней</string>
+    <string name="period_month">30 дней</string>
+    <string name="period_year">1 год</string>
+    <string name="chart_error">Не удалось загрузить историю курса</string>
+    <string name="period_change">Изменение за период: %s</string>
+    <string name="change_since_yesterday">Изменение к предыдущему курсу</string>
+    <string name="share">Поделиться</string>
+    <string name="share_text">%1$s = %2$s (%3$s)\nЦентральный банк Узбекистана, %4$s\nhttps://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz</string>
+
+    <!-- Alerts -->
+    <string name="alert_set">Уведомление о курсе</string>
+    <string name="alert_dialog_title">Сообщить, когда курс %s</string>
+    <string name="alert_above">поднимется выше</string>
+    <string name="alert_below">опустится ниже</string>
+    <string name="alert_value_hint">Курс, сум</string>
+    <string name="alert_saved">Уведомление сохранено. Мы сообщим вам.</string>
+    <string name="alert_invalid">Введите корректное число</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
+    <string name="alert_item_above">%1$s выше %2$s</string>
+    <string name="alert_item_below">%1$s ниже %2$s</string>
+
+    <!-- Notifications -->
+    <string name="channel_daily">Ежедневные курсы</string>
+    <string name="channel_alerts">Уведомления о курсе</string>
+    <string name="daily_title">Новые курсы на %s</string>
+    <string name="alert_triggered_above">%1$s поднялся выше %2$s — сейчас %3$s</string>
+    <string name="alert_triggered_below">%1$s опустился ниже %2$s — сейчас %3$s</string>
+    <string name="notification_permission_denied">Уведомления отключены в настройках системы</string>
+
+    <!-- Settings -->
+    <string name="settings">Настройки</string>
+    <string name="cat_general">Общие</string>
+    <string name="cat_notifications">Уведомления</string>
+    <string name="cat_ads">Реклама</string>
+    <string name="cat_about">О приложении</string>
+    <string name="language">Язык</string>
+    <string name="language_system">Как в системе</string>
     <string name="uzbek">O\'zbek</string>
     <string name="uzbekc">Ўзбек</string>
     <string name="english">English</string>
     <string name="russian">Русский</string>
-    <string name="splash_title">Complex Programmer</string>
-    <string name="splash_subtitle">complexprogrammer.uz</string>
-    <string name="language">Язык</string>
-    <string name="about">о нас</string>
-    <string name="telegram">Telegram</string>>
-    <string name="current_time">Текущее время</string>
-    <string name="sum">Сумма</string>
+    <string name="theme">Тема</string>
+    <string name="theme_system">Как в системе</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="pref_daily">Ежедневное уведомление о курсе</string>
+    <string name="pref_daily_summary">Сообщать, когда Центробанк публикует новые курсы</string>
+    <string name="pref_alerts">Уведомления о курсе</string>
+    <string name="pref_alerts_summary">Активных: %d</string>
+    <string name="pref_alerts_empty">Нет активных уведомлений. Откройте валюту и нажмите на колокольчик.</string>
+    <string name="pref_ad_free">24 часа без рекламы</string>
+    <string name="pref_ad_free_summary">Посмотрите одно короткое видео</string>
+    <string name="pref_ad_free_active">Реклама отключена до %s</string>
+    <string name="ad_not_ready">Видео ещё не готово. Попробуйте чуть позже.</string>
+    <string name="pref_privacy">Настройки конфиденциальности рекламы</string>
+    <string name="telegram">Telegram-канал</string>
     <string name="version">Версия %s</string>
-    <string name="send_me_bugs">Если вы столкнетесь с ошибкой, не стесняйтесь обращаться ко мне по электронной почте.</string>
+    <string name="send_me_bugs">Нашли ошибку или есть идея? Напишите нам на почту.</string>
     <string name="site_url">www.complexprogrammer.uz</string>
-    <string name="file_url">http://complexprogrammer.uz/static</string>
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Разработчик</string>
     <string name="developer">Odiljon Gaybullaev</string>
-    <string name="back">назад</string>
-    <string name="server_error">Произошла ошибка на сервере. Пожалуйста, попробуйте позже.</string>
 
+    <!-- Widget -->
+    <string name="widget_description">Курсы USD, EUR и RUB (или ваших избранных)</string>
+    <string name="widget_loading">Загрузка…</string>
 </resources>

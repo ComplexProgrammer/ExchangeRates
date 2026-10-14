@@ -102,3 +102,14 @@ nb-configuration.xml
 /captures
 .externalNativeBuild
 .cxx
+
+##############################
+## Project
+##############################
+# Signing keys and build outputs must never be committed
+*.jks
+*.keystore
+app/release/
+*.apk
+*.aab
+replay_pid*

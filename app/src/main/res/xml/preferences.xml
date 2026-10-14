@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/cat_general">
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:iconSpaceReserved="false"
+            app:key="language"
+            app:title="@string/language"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:iconSpaceReserved="false"
+            app:key="theme"
+            app:title="@string/theme"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/cat_notifications">
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:iconSpaceReserved="false"
+            app:key="daily_notification"
+            app:summary="@string/pref_daily_summary"
+            app:title="@string/pref_daily" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="alerts"
+            app:title="@string/pref_alerts" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:key="cat_ads"
+        app:title="@string/cat_ads">
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="ad_free"
+            app:title="@string/pref_ad_free" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:isPreferenceVisible="false"
+            app:key="privacy"
+            app:title="@string/pref_privacy" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:iconSpaceReserved="false"
+        app:title="@string/cat_about">
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="telegram"
+            app:summary="t.me/ComplexProgrammer"
+            app:title="@string/telegram" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="email"
+            app:summary="@string/email"
+            app:title="@string/send_me_bugs" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="site"
+            app:summary="@string/site_url"
+            app:title="@string/developer" />
+        <Preference
+            app:iconSpaceReserved="false"
+            app:key="version"
+            app:selectable="false"
+            app:title="@string/app_name" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -3,29 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-        android:usesCleartextTraffic="true"
-        tools:targetApi="m">
+        android:theme="@style/Theme.ExchangeRates"
+        android:usesCleartextTraffic="false"
+        tools:targetApi="tiramisu">
         <activity
-            android:name=".ServerErrorActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ViewByItem"
-            android:exported="true" />
-        <activity
-            android:name=".SplashScreenActivity"
-            android:exported="true">
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ExchangeRates.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,20 +28,44 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NoInternetActivity"
-            android:exported="true" />
+            android:name=".DetailActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+
+        <receiver
+            android:name=".widget.RatesWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rates_widget_info" />
+        </receiver>
+
+        <!-- Lets AppCompat persist the per-app language on Android 12 and below -->
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-7773722896374259~4410145697" />
-        <meta-data android:name="com.startapp.sdk.APPLICATION_ID" android:value="209813347" />
-        <meta-data android:name="applovin.sdk.key"
-            android:value="TAb12Zp_lSrd3UxrbV4iClqMHePfMgItpKNHNnCpIBcADkhxT49q8AeLEi7xbTKOCSqqGVTTbRLHRC6fnW4T9p"  />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <meta-data
+            android:name="com.startapp.sdk.APPLICATION_ID"
+            android:value="209813347" />
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="TAb12Zp_lSrd3UxrbV4iClqMHePfMgItpKNHNnCpIBcADkhxT49q8AeLEi7xbTKOCSqqGVTTbRLHRC6fnW4T9p" />
     </application>
 
 </manifest>

@@ -1,25 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ўзбекистондаги валюта курслари</string>
-    <string name="no_internet_is_available">Интернет йўқ</string>>
+    <string name="sum">сўм</string>
+
+    <!-- Main screen -->
+    <string name="rates_source">Ўзбекистон Марказий банки</string>
+    <string name="rates_for_date">%s ҳолатига расмий курс</string>
+    <string name="offline_banner">Янгилаб бўлмади. %s даги сақланган курслар кўрсатилмоқда</string>
+    <string name="error_loading">Курсларни юклаб бўлмади. Интернетни текшириб, қайта уриниб кўринг.</string>
+    <string name="no_internet_is_available">Интернет алоқаси йўқ</string>
+    <string name="retry">Қайта уриниш</string>
+    <string name="search_hint">Валютани қидириш</string>
+    <string name="nothing_found">Ҳеч нарса топилмади</string>
+    <string name="favorites_add">%s ни севимлиларга қўшиш</string>
+    <string name="favorites_remove">%s ни севимлилардан олиб ташлаш</string>
+    <string name="row_description">%1$s %2$s %3$s сўмга тенг, ўзгариш %4$s</string>
+
+    <!-- Detail screen -->
+    <string name="converter_title">Калькулятор</string>
+    <string name="swap">Валюталарни алмаштириш</string>
+    <string name="chart_title">Курс тарихи</string>
+    <string name="period_week">7 кун</string>
+    <string name="period_month">30 кун</string>
+    <string name="period_year">1 йил</string>
+    <string name="chart_error">Курс тарихини юклаб бўлмади</string>
+    <string name="period_change">Давр ичида ўзгариш: %s</string>
+    <string name="change_since_yesterday">Олдинги курсга нисбатан ўзгариш</string>
+    <string name="share">Улашиш</string>
+    <string name="share_text">%1$s = %2$s (%3$s)\nЎзбекистон Марказий банки, %4$s\nhttps://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz</string>
+
+    <!-- Alerts -->
+    <string name="alert_set">Курс ҳақида эслатма</string>
+    <string name="alert_dialog_title">%s курси қачон хабар берилсин</string>
+    <string name="alert_above">дан ошганда</string>
+    <string name="alert_below">дан тушганда</string>
+    <string name="alert_value_hint">Курс, сўм</string>
+    <string name="alert_saved">Эслатма сақланди. Сизга хабар берамиз.</string>
+    <string name="alert_invalid">Тўғри сон киритинг</string>
+    <string name="cancel">Бекор қилиш</string>
+    <string name="save">Сақлаш</string>
+    <string name="delete">Ўчириш</string>
+    <string name="alert_item_above">%1$s %2$s дан юқори</string>
+    <string name="alert_item_below">%1$s %2$s дан паст</string>
+
+    <!-- Notifications -->
+    <string name="channel_daily">Кунлик курслар</string>
+    <string name="channel_alerts">Курс эслатмалари</string>
+    <string name="daily_title">%s учун янги курслар</string>
+    <string name="alert_triggered_above">%1$s %2$s дан ошди — ҳозир %3$s</string>
+    <string name="alert_triggered_below">%1$s %2$s дан тушди — ҳозир %3$s</string>
+    <string name="notification_permission_denied">Билдиришномалар тизим созламаларида ўчирилган</string>
+
+    <!-- Settings -->
+    <string name="settings">Созламалар</string>
+    <string name="cat_general">Умумий</string>
+    <string name="cat_notifications">Билдиришномалар</string>
+    <string name="cat_ads">Реклама</string>
+    <string name="cat_about">Илова ҳақида</string>
+    <string name="language">Тил</string>
+    <string name="language_system">Тизим тили</string>
     <string name="uzbek">O\'zbek</string>
     <string name="uzbekc">Ўзбек</string>
     <string name="english">English</string>
     <string name="russian">Русский</string>
-    <string name="splash_title">Complex Programmer</string>
-    <string name="splash_subtitle">complexprogrammer.uz</string>
-    <string name="language">Тил</string>
-    <string name="about">Биз ҳақимизда</string>
-    <string name="telegram">Telegram</string>
-    <string name="current_time">Жорий вақт</string>
-    <string name="sum">Сўм</string>
+    <string name="theme">Мавзу</string>
+    <string name="theme_system">Тизим бўйича</string>
+    <string name="theme_light">Ёруғ</string>
+    <string name="theme_dark">Тунги</string>
+    <string name="pref_daily">Кунлик курс билдиришномаси</string>
+    <string name="pref_daily_summary">Марказий банк янги курсларни эълон қилганда хабар бериш</string>
+    <string name="pref_alerts">Курс эслатмалари</string>
+    <string name="pref_alerts_summary">Фаол: %d</string>
+    <string name="pref_alerts_empty">Фаол эслатмалар йўқ. Валютани очиб, қўнғироқча белгисини босинг.</string>
+    <string name="pref_ad_free">24 соат рекламасиз</string>
+    <string name="pref_ad_free_summary">Битта қисқа видео кўринг</string>
+    <string name="pref_ad_free_active">Реклама %s гача ўчирилган</string>
+    <string name="ad_not_ready">Видео ҳали тайёр эмас. Бироздан сўнг қайта уриниб кўринг.</string>
+    <string name="pref_privacy">Реклама махфийлик созламалари</string>
+    <string name="telegram">Telegram канал</string>
     <string name="version">Версия %s</string>
-    <string name="send_me_bugs">Агар сиз хатога дуч келсангиз, мен билан електрон почта орқали боғланишингиз мумкин.</string>
+    <string name="send_me_bugs">Хато топдингизми ёки таклифингиз борми? Бизга электрон почта орқали ёзинг.</string>
     <string name="site_url">www.complexprogrammer.uz</string>
-    <string name="file_url">http://complexprogrammer.uz/static</string>
     <string name="email">complexprogrammer@mail.ru</string>
     <string name="developer_label">Дастурчи</string>
     <string name="developer">Одилжон Гайбуллаев</string>
-    <string name="back">орқага</string>
-    <string name="server_error">Серверда хатолик юз берди. Илтимос кейинроқ қайта уриниб кўринг.</string>
+
+    <!-- Widget -->
+    <string name="widget_description">USD, EUR ва RUB курслари (ёки севимлиларингиз)</string>
+    <string name="widget_loading">Юкланмоқда…</string>
 </resources>

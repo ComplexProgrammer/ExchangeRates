@@ -1,16 +1,13 @@
 package exchangerates.complexprogrammer.uz;
 
-import static androidx.lifecycle.Lifecycle.Event.ON_START;
-
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.gms.ads.AdError;
@@ -19,150 +16,120 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
 
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-public class AppOpenManager implements LifecycleObserver, Application.ActivityLifecycleCallbacks{
+import exchangerates.complexprogrammer.uz.ads.AdManager;
 
-    private long loadTime = 0;
-    private Activity currentActivity;
-    private static final String LOG_TAG = "AppOpenManager";
+/**
+ * App open ad shown only when the user comes back to the app after a while,
+ * never on a cold start and at most once every {@link #MIN_INTERVAL_MS}.
+ */
+public class AppOpenManager implements DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
     private static final String AD_UNIT_ID = "ca-app-pub-7773722896374259/8468911837";
-    private AppOpenAd appOpenAd = null;
+    private static final long MIN_INTERVAL_MS = TimeUnit.HOURS.toMillis(4);
+    private static final long AD_EXPIRY_MS = TimeUnit.HOURS.toMillis(4);
 
-    private AppOpenAd.AppOpenAdLoadCallback loadCallback;
-    private static boolean isShowingAd = false;
-    public void showAdIfAvailable() {
-        // Only show ad if there is not already an app open ad currently showing
-        // and an ad is available.
-        if (!isShowingAd && isAdAvailable()) {
-            Log.d(LOG_TAG, "Will show ad.");
+    private final Application application;
+    private AppOpenAd appOpenAd;
+    private long loadTime;
+    private boolean loading;
+    private boolean wasInBackground;
+    private Activity currentActivity;
 
-            FullScreenContentCallback fullScreenContentCallback =
-                    new FullScreenContentCallback() {
-                        @Override
-                        public void onAdDismissedFullScreenContent() {
-                            // Set the reference to null so isAdAvailable() returns false.
-                            AppOpenManager.this.appOpenAd = null;
-                            isShowingAd = false;
-                            fetchAd();
-                        }
-
-                        @Override
-                        public void onAdFailedToShowFullScreenContent(AdError adError) {}
-
-                        @Override
-                        public void onAdShowedFullScreenContent() {
-                            isShowingAd = true;
-                        }
-                    };
-
-            appOpenAd.setFullScreenContentCallback(fullScreenContentCallback);
-            appOpenAd.show(currentActivity);
-
-        } else {
-            Log.d(LOG_TAG, "Can not show ad.");
-            fetchAd();
-        }
-    }
-    private final MyApplication myApplication;
-
-    /** Constructor */
-    public AppOpenManager(MyApplication myApplication) {
-        this.myApplication = myApplication;
-        this.myApplication.registerActivityLifecycleCallbacks(this);
+    public AppOpenManager(Application application) {
+        this.application = application;
+        application.registerActivityLifecycleCallbacks(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
-    @OnLifecycleEvent(ON_START)
-    public void onStart() {
-        showAdIfAvailable();
-        Log.d(LOG_TAG, "onStart");
+
+    @Override
+    public void onStart(@NonNull LifecycleOwner owner) {
+        if (wasInBackground) showIfAllowed();
     }
 
-    /** Request an ad */
-    public void fetchAd() {
-        // We will implement this below.
-        // Have unused ad, no need to fetch another.
-        if (isAdAvailable()) {
+    @Override
+    public void onStop(@NonNull LifecycleOwner owner) {
+        wasInBackground = true;
+    }
+
+    private void showIfAllowed() {
+        if (!AdManager.isReady() || AdManager.isAdFree(application) || currentActivity == null) return;
+        if (!isAdAvailable()) {
+            fetchAd();
             return;
         }
+        if (AdManager.isShowingFullscreen() || !AdManager.fullscreenGapPassed(application, MIN_INTERVAL_MS)) {
+            return;
+        }
+        AppOpenAd ad = appOpenAd;
+        appOpenAd = null;
+        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                AdManager.setShowingFullscreen(application, false);
+                fetchAd();
+            }
 
-        loadCallback =
-                new AppOpenAd.AppOpenAdLoadCallback() {
-                    /**
-                     * Called when an app open ad has loaded.
-                     *
-                     * @param ad the loaded app open ad.
-                     */
-                    @Override
-                    public void onAdLoaded(AppOpenAd ad) {
-                        AppOpenManager.this.appOpenAd = ad;
-                        AppOpenManager.this.loadTime = (new Date()).getTime();
-                    }
-
-                    /**
-                     * Called when an app open ad has failed to load.
-                     *
-                     * @param loadAdError the error.
-                     */
-                    @Override
-                    public void onAdFailedToLoad(LoadAdError loadAdError) {
-                        // Handle the error.
-                    }
-
-                };
-        AdRequest request = getAdRequest();
-        AppOpenAd.load(
-                myApplication, AD_UNIT_ID, request,
-                AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback);
-
-    }
-    /** Utility method to check if ad was loaded more than n hours ago. */
-    private boolean wasLoadTimeLessThanNHoursAgo(long numHours) {
-        long dateDifference = (new Date()).getTime() - this.loadTime;
-        long numMilliSecondsPerHour = 3600000;
-        return (dateDifference < (numMilliSecondsPerHour * numHours));
-    }
-    /** Creates and returns ad request. */
-    private AdRequest getAdRequest() {
-        return new AdRequest.Builder().build();
+            @Override
+            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                AdManager.setShowingFullscreen(application, false);
+                fetchAd();
+            }
+        });
+        AdManager.setShowingFullscreen(application, true);
+        ad.show(currentActivity);
     }
 
-    /** Utility method that checks if ad exists and can be shown. */
-    public boolean isAdAvailable() {
-        return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4);
-    }
-    @Override
-    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+    public void fetchAd() {
+        if (loading || isAdAvailable() || !AdManager.isReady() || AdManager.isAdFree(application)) return;
+        loading = true;
+        AppOpenAd.load(application, AD_UNIT_ID, new AdRequest.Builder().build(), new AppOpenAd.AppOpenAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull AppOpenAd ad) {
+                loading = false;
+                appOpenAd = ad;
+                loadTime = System.currentTimeMillis();
+            }
 
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                loading = false;
+            }
+        });
+    }
+
+    private boolean isAdAvailable() {
+        return appOpenAd != null && System.currentTimeMillis() - loadTime < AD_EXPIRY_MS;
     }
 
     @Override
     public void onActivityStarted(@NonNull Activity activity) {
-
+        currentActivity = activity;
     }
 
     @Override
     public void onActivityResumed(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
-
+        currentActivity = activity;
     }
 
     @Override
     public void onActivityDestroyed(@NonNull Activity activity) {
+        if (currentActivity == activity) currentActivity = null;
+    }
 
+    @Override
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onActivityPaused(@NonNull Activity activity) {
+    }
+
+    @Override
+    public void onActivityStopped(@NonNull Activity activity) {
+    }
+
+    @Override
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle bundle) {
     }
 }
