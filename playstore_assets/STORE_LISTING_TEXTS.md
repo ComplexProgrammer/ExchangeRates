@@ -18,6 +18,11 @@ Ushbu hujjat **Exchange Rates in Uzbekistan** (`exchangerates.complexprogrammer.
    - **Asosiy grafik (Feature graphic)**: `1024 x 500 px`, JPG yoki 24-bit PNG
      * Matnli versiya: `playstore_assets/feature_graphic_1024x500.png`
      * Sof grafik versiya: `playstore_assets/feature_graphic_clean_1024x500.png`
+   - **Video (Promotional Video — YouTube URL)**:
+     * Video fayli: `playstore_assets/promo_video_1080p.mp4` (Full HD 1080p, 16:9, 18 soniya)
+     * YouTube muqovasi: `playstore_assets/youtube_thumbnail_1280x720.png`
+     * Batafsil yuklash va sozlash qo'llanmasi: `playstore_assets/PROMO_VIDEO_GUIDE.md`
+     * Talab: YouTube'ga yuklangan, Public yoki Unlisted, reklamalar o'chirilgan (ads off), yosh chegarasisiz (no age restriction).
 
 3. **Phone assets (Telefon skrinshotlari)**:
    - Hajmi: `1080 x 2400 px` (9:16 nisbat)
