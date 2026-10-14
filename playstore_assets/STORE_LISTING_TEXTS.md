@@ -28,6 +28,16 @@ Ushbu hujjat **Exchange Rates in Uzbekistan** (`exchangerates.complexprogrammer.
    - 5-skrinshot: `playstore_assets/phone_screenshots/screenshot_5_world_currencies.png` (70+ Dunyo Valyutalari)
    - 6-skrinshot: `playstore_assets/phone_screenshots/screenshot_6_convenience.png` (Vidjet & Oflayn Rejim)
 
+4. **7-inch tablet assets (7 dyuymli planshet skrinshotlari)**:
+   - Hajmi: `1200 x 1920 px` (16:10 nisbat)
+   - Papka: `playstore_assets/tablet_7inch_screenshots/`
+   - Skrinshotlar: `screenshot_1_rates.png` dan `screenshot_6_convenience.png` gacha (6 ta)
+
+5. **10-inch tablet assets (10 dyuymli planshet skrinshotlari)**:
+   - Hajmi: `1600 x 2560 px` (16:10 nisbat)
+   - Papka: `playstore_assets/tablet_10inch_screenshots/`
+   - Skrinshotlar: `screenshot_1_rates.png` dan `screenshot_6_convenience.png` gacha (6 ta)
+
 ---
 
 # 1. 🇺🇿 O'zbekcha (Lotin) — Asosiy Til
