@@ -38,13 +38,13 @@ Quyidagi tayyor matnlardan nusxa oling:
 
 #### Video Sarlavhasi (Title):
 ```text
-Valyuta Kursi: Markaziy Bank — Rasmiy Valyuta Kurslari & Konverter
+Valyuta Kurslari: O'zbekiston — Valyuta Kurslari & Konverter
 ```
-*(Yoki Inglizcha: `Exchange Rates: CBU Uzbekistan — Official Rates & Currency Converter`)*
+*(Yoki Inglizcha: `Exchange Rates: Uzbekistan — Rates & Currency Converter`)*
 
 #### Video Tavsifi (Description):
 ```text
-"Valyuta Kursi: Markaziy Bank" ilovasi — O'zbekistonda so'mga nisbatan barcha xalqaro valyutalar kurslarini kuzatish, tezkor konvertatsiya qilish va dinamik grafiklar orqali tahlil qilish uchun qulay yordamchingiz.
+"Valyuta Kurslari: O'zbekiston" ilovasi — O'zbekistonda so'mga nisbatan barcha xalqaro valyutalar kurslarini kuzatish, tezkor konvertatsiya qilish va dinamik grafiklar orqali tahlil qilish uchun qulay yordamchingiz.
 
 📲 Google Play Store'dan yuklab oling:
 https://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz

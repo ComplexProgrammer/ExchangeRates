@@ -49,12 +49,12 @@ Ushbu hujjat **Exchange Rates in Uzbekistan** (`exchangerates.complexprogrammer.
 
 ### Ilova nomi (App name) — [28/30 belgi]:
 ```text
-Valyuta Kursi: Markaziy Bank
+Valyuta Kurslari: O'zbekiston
 ```
 
 ### Qisqa tavsif (Short description) — [78/80 belgi]:
 ```text
-Markaziy Bank rasmiy valyuta kurslari, konverter, dinamik grafik va signallar.
+O'zbekistonda valyuta kurslari, qulay konverter, dinamik grafik va signallar.
 ```
 
 ### To'liq tavsif (Full description):
@@ -73,7 +73,7 @@ https://gov.uz
 ━━━━━━━━━━━━━━━━━━━━━
 ILOVA IMKONIYATLARI:
 ━━━━━━━━━━━━━━━━━━━━━
-"Valyuta Kurslari: Markaziy Bank" — O'zbekistonda so'mga nisbatan barcha xalqaro valyutalar kurslarini kuzatish, tezkor konvertatsiya qilish va bozor dinamikasini tahlil qilish uchun eng qulay va ishonchli yordamchingiz.
+"Valyuta Kurslari: O'zbekiston" — O'zbekistonda so'mga nisbatan barcha xalqaro valyutalar kurslarini kuzatish, tezkor konvertatsiya qilish va bozor dinamikasini tahlil qilish uchun eng qulay va ishonchli yordamchingiz.
 
 💵 MARKAZIY BANKNING RASMIY KURSLARI:
 • AQSH Dollari (USD), Yevro (EUR), Rossiya Rubli (RUB) va dunyoning 70 dan ortiq valyutalari;
@@ -112,14 +112,14 @@ ILOVA IMKONIYATLARI:
 
 # 2. 🇷🇺 Русский
 
-### Название приложения (App name) — [27/30 символов]:
+### Название приложения (App name) — [24/30 символов]:
 ```text
-Курсы Валют: ЦБ Узбекистана
+Курсы валют в Узбекистане
 ```
 
-### Краткое описание (Short description) — [76/80 символов]:
+### Краткое описание (Short description) — [73/80 символов]:
 ```text
-Официальные курсы валют ЦБ Узбекистана, удобный конвертер, графики и сигналы.
+Курсы валют в Узбекистане, удобный конвертер, история, графики и сигналы.
 ```
 
 ### Полное описание (Full description):
@@ -138,7 +138,7 @@ https://gov.uz
 ━━━━━━━━━━━━━━━━━━━━━
 ОСНОВНЫЕ ВОЗМОЖНОСТИ:
 ━━━━━━━━━━━━━━━━━━━━━
-"Курсы Валют: ЦБ Узбекистана" — ваш надёжный и современный финансовый инструмент для отслеживания официальных курсов валют к узбекскому суму, быстрой конвертации и анализа динамики рынка.
+"Курсы валют в Узбекистане" — ваш надёжный и современный финансовый инструмент для отслеживания официальных курсов валют к узбекскому суму, быстрой конвертации и анализа динамики рынка.
 
 💵 ОФИЦИАЛЬНЫЕ КУРСЫ ЦЕНТРАЛЬНОГО БАНКА:
 • Доллар США (USD), Евро (EUR), Российский рубль (RUB) и более 70 мировых валют;
@@ -177,14 +177,14 @@ https://gov.uz
 
 # 3. 🇬🇧 English
 
-### App name — [30/30 characters]:
+### App name — [25/30 characters]:
 ```text
-Exchange Rates: CBU Uzbekistan
+Exchange Rates: Uzbekistan
 ```
 
-### Short description — [78/80 characters]:
+### Short description — [74/80 characters]:
 ```text
-Official CBU exchange rates in Uzbekistan, smart converter, charts and alerts.
+Exchange rates in Uzbekistan, smart currency converter, charts and alerts.
 ```
 
 ### Full description:
@@ -203,7 +203,7 @@ https://gov.uz
 ━━━━━━━━━━━━━━━━━━━━━
 KEY FEATURES:
 ━━━━━━━━━━━━━━━━━━━━━
-"Exchange Rates: CBU Uzbekistan" is an elegant and powerful currency companion for tracking official exchange rates against the Uzbek soum (UZS), calculating conversions, and analyzing market trends.
+"Exchange Rates: Uzbekistan" is an elegant and powerful currency companion for tracking official exchange rates against the Uzbek soum (UZS), calculating conversions, and analyzing market trends.
 
 💵 OFFICIAL CENTRAL BANK RATES:
 • US Dollar (USD), Euro (EUR), Russian Ruble (RUB), and over 70 world currencies;
@@ -242,14 +242,14 @@ KEY FEATURES:
 
 # 4. 🇺🇿 Ўзбекча (Кирилл)
 
-### Илова номи (App name) — [30/30 белги]:
+### Илова номи (App name) — [26/30 белги]:
 ```text
-Валюта Курслари: Марказий Банк
+Валюта Курслари: Ўзбекистон
 ```
 
-### Қисқа тавсиф (Short description) — [77/80 белги]:
+### Қисқа тавсиф (Short description) — [74/80 белги]:
 ```text
-Марказий Банк расмий валюта курслари, конвертер, динамик график ва сигналлар.
+Ўзбекистонда валюта курслари, қулай конвертер, динамик график ва сигналлар.
 ```
 
 ### Тўлиқ тавсиф (Full description):
@@ -268,7 +268,7 @@ https://gov.uz
 ━━━━━━━━━━━━━━━━━━━━━
 ИЛОВА ИМКОНИЯТЛАРИ:
 ━━━━━━━━━━━━━━━━━━━━━
-"Валюта Курслари: Марказий Банк" — Ўзбекистонда сўмга нисбатан барча халқаро валюталар курсларини кузатиш, тезкор конвертация қилиш ва бозор динамикасини таҳлил қилиш учун энг қулай ва ишончли ёрдамчингиз.
+"Валюта Курслари: Ўзбекистон" — Ўзбекистонда сўмга нисбатан барча халқаро валюталар курсларини кузатиш, тезкор конвертация қилиш ва бозор динамикасини таҳлил қилиш учун энг қулай ва ишончли ёрдамчингиз.
 
 💵 МАРКАЗИЙ БАНКНИНГ РАСМИЙ КУРСЛАРИ:
 • АҚШ Доллари (USD), Евро (EUR), Россия Рубли (RUB) ва дунёнинг 70 дан ортиқ валюталари;
@@ -302,3 +302,59 @@ https://gov.uz
 • Ўзбекча (лотин ва кирилл), Русча ва Инглизча тилларни тўлиқ қўллаб-қувватлайди;
 • Кўзни толиқтирмайдиган чиройли тунги (Dark mode) ва кундузги мавзу.
 ```
+
+---
+
+# 5. 🇹🇷 Türkçe (tr-TR) — Play Console Til Sozlamasi
+
+> Google Play Console'da `tr-TR` (Turk tili) qo'shilgan yoki do'kon sahifasida `Valyuta Kursi: Markaziy Bank` deb kiritilgan bo'lsa, quyidagi matnni ishlating:
+
+### Uygulama adı (App name) — [24/30 karakter]:
+```text
+Özbekistan Döviz Kurları
+```
+*(Yoki agar tr-TR bo'limida o'zbekcha qoldirmoqchi bo'lsangiz: `Valyuta Kurslari: O'zbekiston`)*
+
+### Kısa açıklama (Short description) — [77/80 karakter]:
+```text
+Özbekistan döviz kurları, hızlı para çevirici, kur grafikleri ve bildirimler.
+```
+
+### Tam açıklama (Full description):
+```text
+⚠️ ÖNEMLİ SORUMLULUK REDDİ BEYANI (DISCLAIMER):
+Bu uygulama Özbekistan Cumhuriyeti Merkez Bankası veya herhangi bir devlet kurumunu temsil etmemektedir, resmi olarak bağlı değildir ve devlet kurumunu İFADE ETMEZ.
+Uygulama, Merkez Bankası'nın kamuya açık açık veri tabanını kullanan bağımsız bir finansal bilgi ve hesaplama aracıdır.
+
+🏛️ RESMİ BİLGİ KAYNAĞI:
+Uygulamada gösterilen tüm döviz kurları Özbekistan Cumhuriyeti Merkez Bankası'nın resmi kamu portallarından alınmaktadır:
+1. Özbekistan Cumhuriyeti Merkez Bankası resmi web sitesi:
+https://cbu.uz
+2. Özbekistan Cumhuriyeti Hükümet Portalı:
+https://gov.uz
+
+━━━━━━━━━━━━━━━━━━━━━
+ÖZELLİKLER:
+━━━━━━━━━━━━━━━━━━━━━
+"Özbekistan Döviz Kurları", Özbekistan somuna (UZS) karşı tüm döviz kurlarını takip etmek, anında çeviri yapmak ve piyasa dinamiklerini analiz etmek için güvenilir yardımcınızdır.
+
+💵 GÜNCEL VE RESMİ DÖVİZ KURLARI:
+• ABD Doları (USD), Euro (EUR), Rus Rublesi (RUB) ve 70'ten fazla dünya para birimi;
+• Günlük kur değişim oranları ve farkları;
+• Resmi yayınlanma tarihi ve saati.
+
+🔄 HIZLI VE HASSAS DÖVİZ ÇEVİRİCİ:
+• Herhangi bir para birimini anında soma veya tersine çevirin;
+• Tek tuşla döviz yönünü değiştirin (Swap).
+
+📈 KUR GEÇMİŞİ VE GRAFİKLER:
+• 7 günlük, 30 günlük ve 1 yıllık geçmiş grafikler;
+• En yüksek ve en düşük kur seviyeleri.
+
+🔔 AKILLI FİYAT ALARMLARI:
+• İstediğiniz kura ulaşıldığında anlık bildirim alın.
+
+📱 ANA EKRAN WİDGETI & ÇEVRİMDIŞI MOD:
+• İnternetsiz çalışma ve ana ekran widget desteği.
+```
+
