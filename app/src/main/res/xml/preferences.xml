@@ -57,6 +57,10 @@
         app:title="@string/cat_about">
         <Preference
             app:iconSpaceReserved="false"
+            app:key="privacy_policy"
+            app:title="@string/pref_privacy_policy" />
+        <Preference
+            app:iconSpaceReserved="false"
             app:key="telegram"
             app:summary="t.me/ComplexProgrammer"
             app:title="@string/telegram" />

@@ -103,11 +103,19 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
             Preference privacy = findPreference("privacy");
-            privacy.setVisible(ConsentManager.isPrivacyOptionsRequired(requireActivity()));
-            privacy.setOnPreferenceClickListener(pref -> {
-                ConsentManager.showPrivacyOptions(requireActivity());
-                return true;
-            });
+            if (privacy != null) {
+                privacy.setVisible(ConsentManager.isPrivacyOptionsRequired(requireActivity()));
+                privacy.setOnPreferenceClickListener(pref -> {
+                    ConsentManager.showPrivacyOptions(requireActivity());
+                    return true;
+                });
+            }
+
+            Preference privacyPolicy = findPreference("privacy_policy");
+            if (privacyPolicy != null) {
+                privacyPolicy.setOnPreferenceClickListener(pref ->
+                        open(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)))));
+            }
 
             findPreference("telegram").setOnPreferenceClickListener(pref ->
                     open(new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/ComplexProgrammer"))));

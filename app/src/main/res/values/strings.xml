@@ -76,6 +76,8 @@
     <string name="pref_ad_free_active">Ads are off until %s</string>
     <string name="ad_not_ready">The video isn\'t ready yet. Try again in a moment.</string>
     <string name="pref_privacy">Ad privacy settings</string>
+    <string name="pref_privacy_policy">Privacy policy</string>
+    <string name="privacy_policy_url">https://complexprogrammer.uz/privacy/</string>
     <string name="telegram">Telegram channel</string>
     <string name="version">Version %s</string>
     <string name="send_me_bugs">Found a bug or have an idea? Write to us by e-mail.</string>

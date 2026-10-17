@@ -51,13 +51,20 @@ public class AdManager {
 
     /** Resolves consent (UMP) and initializes the SDK once. {@code onReady} runs only if ads may be requested. */
     public static void init(Activity activity, Runnable onReady) {
+        if (activity == null || isActivityDead(activity)) return;
         ConsentManager.gather(activity, () -> {
+            if (isActivityDead(activity)) return;
             if (!initialized) {
                 initialized = true;
-                MobileAds.initialize(activity.getApplicationContext(), status -> {
-                });
+                try {
+                    MobileAds.initialize(activity.getApplicationContext(), status -> {
+                    });
+                } catch (Exception ignored) {
+                }
             }
-            onReady.run();
+            if (!isActivityDead(activity) && onReady != null) {
+                onReady.run();
+            }
         });
     }
 
@@ -85,18 +92,27 @@ public class AdManager {
     // Banner
 
     public static void loadBanner(Activity activity, FrameLayout container) {
+        if (activity == null || container == null || isActivityDead(activity)) return;
         if (!initialized || isAdFree(activity)) {
             container.removeAllViews();
             container.setVisibility(View.GONE);
             return;
         }
         if (container.getChildCount() > 0) return;
-        container.setVisibility(View.VISIBLE);
-        AdView adView = new AdView(activity);
-        adView.setAdUnitId(BANNER_ID);
-        adView.setAdSize(adaptiveSize(activity));
-        container.addView(adView);
-        adView.loadAd(new AdRequest.Builder().build());
+        try {
+            container.setVisibility(View.VISIBLE);
+            AdView adView = new AdView(activity);
+            adView.setAdUnitId(BANNER_ID);
+            adView.setAdSize(adaptiveSize(activity));
+            container.addView(adView);
+            adView.loadAd(new AdRequest.Builder().build());
+        } catch (Exception e) {
+            container.setVisibility(View.GONE);
+        }
+    }
+
+    private static boolean isActivityDead(Activity activity) {
+        return activity.isFinishing() || (android.os.Build.VERSION.SDK_INT >= 17 && activity.isDestroyed());
     }
 
     private static AdSize adaptiveSize(Activity activity) {

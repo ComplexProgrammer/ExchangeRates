@@ -76,6 +76,8 @@
     <string name="pref_ad_free_active">Реклама отключена до %s</string>
     <string name="ad_not_ready">Видео ещё не готово. Попробуйте чуть позже.</string>
     <string name="pref_privacy">Настройки конфиденциальности рекламы</string>
+    <string name="pref_privacy_policy">Политика конфиденциальности</string>
+    <string name="privacy_policy_url">https://complexprogrammer.uz/privacy/</string>
     <string name="telegram">Telegram-канал</string>
     <string name="version">Версия %s</string>
     <string name="send_me_bugs">Нашли ошибку или есть идея? Напишите нам на почту.</string>

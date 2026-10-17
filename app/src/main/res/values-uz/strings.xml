@@ -76,6 +76,8 @@
     <string name="pref_ad_free_active">Reklama %s gacha o\'chirilgan</string>
     <string name="ad_not_ready">Video hali tayyor emas. Birozdan so\'ng qayta urinib ko\'ring.</string>
     <string name="pref_privacy">Reklama maxfiylik sozlamalari</string>
+    <string name="pref_privacy_policy">Maxfiylik siyosati</string>
+    <string name="privacy_policy_url">https://complexprogrammer.uz/privacy/</string>
     <string name="telegram">Telegram kanal</string>
     <string name="version">Versiya %s</string>
     <string name="send_me_bugs">Xato topdingizmi yoki taklifingiz bormi? Bizga elektron pochta orqali yozing.</string>

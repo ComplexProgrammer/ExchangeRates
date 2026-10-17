@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdk 36
+    compileSdk 34
 
     defaultConfig {
         applicationId "exchangerates.complexprogrammer.uz"
         minSdk 24
-        targetSdk 36
-        versionCode 24
+        targetSdk 34
+        versionCode 25
         versionName "3.0.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -51,11 +51,6 @@ dependencies {
     // Ads
     implementation 'com.google.android.gms:play-services-ads:22.4.0'
     implementation 'com.google.android.ump:user-messaging-platform:2.2.0'
-    implementation 'com.google.ads.mediation:applovin:11.11.3.0'
-    implementation 'com.startapp:admob-mediation:2.8.0'
-    implementation 'com.yandex.android:mobileads:5.3.0'
-    implementation 'com.yandex.android:mobmetricalib:5.0.0'
-    implementation 'com.yandex.ads.mediation:mobileads-admob:21.1.0.0'
     implementation project(path: ':nativetemplates')
 
     // Firebase

@@ -19,14 +19,28 @@ public class MyApplication extends Application implements Configuration.Provider
     @Override
     public void onCreate() {
         super.onCreate();
-        // Ad SDKs start extra processes (e.g. ":Metrica"); app setup belongs to the main one only.
         String process = currentProcessName();
         if (!process.isEmpty() && !getPackageName().equals(process)) return;
 
-        applyTheme(AppPrefs.getTheme(this));
-        Notifier.createChannels(this);
-        RatesWorker.schedule(this);
-        appOpenManager = new AppOpenManager(this);
+        try {
+            applyTheme(AppPrefs.getTheme(this));
+        } catch (Exception ignored) {
+        }
+
+        try {
+            Notifier.createChannels(this);
+        } catch (Exception ignored) {
+        }
+
+        try {
+            RatesWorker.schedule(this);
+        } catch (Exception ignored) {
+        }
+
+        try {
+            appOpenManager = new AppOpenManager(this);
+        } catch (Exception ignored) {
+        }
     }
 
     /** One of the ad SDKs removes WorkManager's default initializer, so the app supplies the configuration. */
