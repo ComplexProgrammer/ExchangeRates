@@ -1,4 +1,4 @@
-# Google Play Console: Versiya 3.0.2 (27) Chiqarilish Eslatmalari (Release Notes)
+# Google Play Console: Versiya 3.0.2 (28) Chiqarilish Eslatmalari (Release Notes)
 
 Google Play Console'ning **"Release notes" (Chiqarilish eslatmalari)** maydoniga to'g'ridan-to'g'ri nusxalab qo'yish uchun tayyor XML formatidagi matnlar:
 

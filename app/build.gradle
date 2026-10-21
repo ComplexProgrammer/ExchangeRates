@@ -12,7 +12,7 @@ android {
         applicationId "exchangerates.complexprogrammer.uz"
         minSdk 24
         targetSdk 36
-        versionCode 27
+        versionCode 28
         versionName "3.0.2"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
