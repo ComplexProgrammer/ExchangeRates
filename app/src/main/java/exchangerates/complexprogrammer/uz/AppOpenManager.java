@@ -53,7 +53,8 @@ public class AppOpenManager implements DefaultLifecycleObserver, Application.Act
     }
 
     private void showIfAllowed() {
-        if (!AdManager.isReady() || AdManager.isAdFree(application) || currentActivity == null) return;
+        if (!AdManager.isReady() || AdManager.isAdFree(application) || currentActivity == null
+                || currentActivity.isFinishing() || (android.os.Build.VERSION.SDK_INT >= 17 && currentActivity.isDestroyed())) return;
         if (!isAdAvailable()) {
             fetchAd();
             return;

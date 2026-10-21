@@ -109,23 +109,26 @@ public class MainActivity extends AppCompatActivity implements RatesAdapter.List
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setQueryHint(getString(R.string.search_hint));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String text) {
-                searchView.clearFocus();
-                return true;
-            }
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        if (searchItem != null && searchItem.getActionView() instanceof SearchView) {
+            SearchView searchView = (SearchView) searchItem.getActionView();
+            searchView.setQueryHint(getString(R.string.search_hint));
+            searchView.setMaxWidth(Integer.MAX_VALUE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String text) {
+                    searchView.clearFocus();
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String text) {
-                query = text;
-                render();
-                return true;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String text) {
+                    query = text;
+                    render();
+                    return true;
+                }
+            });
+        }
         return true;
     }
 
@@ -150,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements RatesAdapter.List
             public void onRates(@NonNull List<Response> fresh) {
                 loading = false;
                 keepSplash = false;
+                if (isFinishing() || (android.os.Build.VERSION.SDK_INT >= 17 && isDestroyed())) return;
                 swipeRefresh.setRefreshing(false);
                 progress.setVisibility(View.GONE);
                 offlineBanner.setVisibility(View.GONE);
@@ -161,14 +165,19 @@ public class MainActivity extends AppCompatActivity implements RatesAdapter.List
             public void onError() {
                 loading = false;
                 keepSplash = false;
+                if (isFinishing() || (android.os.Build.VERSION.SDK_INT >= 17 && isDestroyed())) return;
                 swipeRefresh.setRefreshing(false);
                 progress.setVisibility(View.GONE);
                 if (rates.isEmpty()) {
                     errorState.setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.error_text)).setText(NetworkUtil.isOnline(MainActivity.this)
-                            ? R.string.error_loading : R.string.no_internet_is_available);
+                    TextView errorText = findViewById(R.id.error_text);
+                    if (errorText != null) {
+                        errorText.setText(NetworkUtil.isOnline(MainActivity.this)
+                                ? R.string.error_loading : R.string.no_internet_is_available);
+                    }
                 } else {
-                    offlineBanner.setText(getString(R.string.offline_banner, rates.get(0).getDate()));
+                    String date = rates.get(0).getDate();
+                    offlineBanner.setText(getString(R.string.offline_banner, date != null ? date : ""));
                     offlineBanner.setVisibility(View.VISIBLE);
                 }
             }
@@ -176,9 +185,11 @@ public class MainActivity extends AppCompatActivity implements RatesAdapter.List
     }
 
     private void showRates(List<Response> data) {
+        if (data == null || data.isEmpty()) return;
         rates = data;
         errorState.setVisibility(View.GONE);
-        header.setText(getString(R.string.rates_for_date, data.get(0).getDate()) + " · " + getString(R.string.rates_source));
+        String date = data.get(0).getDate();
+        header.setText(getString(R.string.rates_for_date, date != null ? date : "") + " · " + getString(R.string.rates_source));
         render();
     }
 

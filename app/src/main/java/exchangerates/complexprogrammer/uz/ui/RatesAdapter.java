@@ -102,11 +102,16 @@ public class RatesAdapter extends ListAdapter<Response, RatesAdapter.Holder> {
             int color = ContextCompat.getColor(context, Formatters.trendColor(item.getDiffValue()));
             diff.setText(changeText);
             diff.setTextColor(color);
-            Drawable icon = DrawableCompat.wrap(ContextCompat.getDrawable(context, Formatters.trendIcon(item.getDiffValue())).mutate());
-            int size = (int) (diff.getTextSize() * 1.2f);
-            icon.setBounds(0, 0, size, size);
-            DrawableCompat.setTint(icon, color);
-            diff.setCompoundDrawablesRelative(icon, null, null, null);
+            Drawable rawIcon = androidx.appcompat.content.res.AppCompatResources.getDrawable(context, Formatters.trendIcon(item.getDiffValue()));
+            if (rawIcon != null) {
+                Drawable icon = DrawableCompat.wrap(rawIcon.mutate());
+                int size = (int) (diff.getTextSize() * 1.2f);
+                icon.setBounds(0, 0, size, size);
+                DrawableCompat.setTint(icon, color);
+                diff.setCompoundDrawablesRelative(icon, null, null, null);
+            } else {
+                diff.setCompoundDrawablesRelative(null, null, null, null);
+            }
 
             boolean isFavorite = favorites.contains(item.getCcy());
             favorite.setImageResource(isFavorite ? R.drawable.ic_star : R.drawable.ic_star_border);

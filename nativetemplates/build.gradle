@@ -2,13 +2,13 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 36
+    buildToolsVersion '35.0.0'
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 36
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {

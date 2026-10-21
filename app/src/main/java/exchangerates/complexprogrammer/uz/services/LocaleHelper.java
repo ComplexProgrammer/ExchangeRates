@@ -22,8 +22,11 @@ public class LocaleHelper {
     public static Locale getLocale(Context context) {
         String tag = AppPrefs.getLanguage(context);
         if ("system".equals(tag)) {
-            Locale system = LocaleListCompat.getAdjustedDefault().get(0);
-            return system != null ? system : Locale.getDefault();
+            LocaleListCompat list = LocaleListCompat.getAdjustedDefault();
+            if (!list.isEmpty() && list.get(0) != null) {
+                return list.get(0);
+            }
+            return Locale.getDefault();
         }
         return Locale.forLanguageTag(tag);
     }

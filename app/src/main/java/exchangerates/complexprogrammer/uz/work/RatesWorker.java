@@ -81,6 +81,7 @@ public class RatesWorker extends Worker {
     }
 
     private static void checkDaily(Context context, List<Response> rates) {
+        if (rates == null || rates.isEmpty()) return;
         String date = rates.get(0).getDate();
         if (!AppPrefs.isDailyEnabled(context) || date.equals(AppPrefs.getLastNotifiedDate(context))) return;
         AppPrefs.setLastNotifiedDate(context, date);

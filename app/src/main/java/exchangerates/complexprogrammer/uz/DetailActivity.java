@@ -105,9 +105,14 @@ public class DetailActivity extends AppCompatActivity {
         int color = ContextCompat.getColor(this, Formatters.trendColor(rate.getDiffValue()));
         diff.setText(Formatters.change(this, rate));
         diff.setTextColor(color);
-        Drawable icon = DrawableCompat.wrap(ContextCompat.getDrawable(this, Formatters.trendIcon(rate.getDiffValue())).mutate());
-        DrawableCompat.setTint(icon, color);
-        diff.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
+        Drawable rawIcon = androidx.appcompat.content.res.AppCompatResources.getDrawable(this, Formatters.trendIcon(rate.getDiffValue()));
+        if (rawIcon != null) {
+            Drawable icon = DrawableCompat.wrap(rawIcon.mutate());
+            DrawableCompat.setTint(icon, color);
+            diff.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, null, null, null);
+        } else {
+            diff.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, null);
+        }
 
         ((TextView) findViewById(R.id.date)).setText(getString(R.string.rates_for_date, rate.getDate())
                 + " · " + getString(R.string.rates_source));
